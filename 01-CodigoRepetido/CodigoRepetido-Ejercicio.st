@@ -16,28 +16,30 @@ Error subclass: #NotFound
 
 !classDefinition: #CustomerBookTest category: #'CodigoRepetido-Ejercicio'!
 TestCase subclass: #CustomerBookTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'customerBook'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:48:30'!
+!CustomerBookTest methodsFor: 'initialization' stamp: 'TA 9/21/2018 20:35:44'!
+setUp
+	
+	customerBook _ CustomerBook new! !
+
+
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:36:40'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
-	| customerBook |
-	
-	customerBook := CustomerBook  new.
 	
 	self shouldNotTakeMoreThanMillisecond: 50 thisAction: [customerBook addCustomerNamed: 'John Lennon'].
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:48:38'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:37:09'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 
-	| customerBook paulMcCartney |
+	| paulMcCartney |
 	
-	customerBook := CustomerBook  new.
 	paulMcCartney := 'Paul McCartney'.
 	
 	customerBook addCustomerNamed: paulMcCartney.
@@ -47,12 +49,8 @@ test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:49:42'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:37:20'!
 test03CanNotAddACustomerWithEmptyName 
-
-	| customerBook |
-			
-	customerBook := CustomerBook new.
 	
 	self tryTheNextAction: [ customerBook addCustomerNamed: '' ] 
 			expectingError: Error 
@@ -60,12 +58,11 @@ test03CanNotAddACustomerWithEmptyName
 				self assert: anError messageText = CustomerBook customerCanNotBeEmptyErrorMessage.
 				self assert: customerBook isEmpty ]! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:51:05'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:39:19'!
 test04CanNotRemoveAnInvalidCustomer
 	
-	| customerBook johnLennon |
+	| johnLennon |
 			
-	customerBook := CustomerBook new.
 	johnLennon := 'John Lennon'.
 	customerBook addCustomerNamed: johnLennon.
 	
@@ -76,17 +73,16 @@ test04CanNotRemoveAnInvalidCustomer
 			self assert: (customerBook includesCustomerNamed: johnLennon) ]
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:46:03'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:37:52'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
-	| customerBook paulMcCartney|
-	
-	customerBook := CustomerBook  new.
+	| paulMcCartney|
+	.
 	paulMcCartney := 'Paul McCartney'.
 	
-	self addAndSuspendOn: customerBook called: paulMcCartney.
+	self addAndSuspendOn: customerBook customerCalled: paulMcCartney.
 	 
-	self onCustomerBook: customerBook thatNumberOfActiveCustomersIs: 0 
+	self onCustomerBook: customerBook checkThatNumberOfActiveCustomersIs: 0 
 											     andNumberOfSuspendedCustomersIs: 1 
 											     andNumberOfCustomersIs: 1 
 											     andCheck: [self assert: (customerBook includesCustomerNamed: paulMcCartney)].
@@ -95,18 +91,17 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:47:03'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:38:02'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 
-	| customerBook paulMcCartney|
+	| paulMcCartney|
 	
-	customerBook := CustomerBook  new.
 	paulMcCartney := 'Paul McCartney'.
 	
-	self addAndSuspendOn: customerBook called: paulMcCartney.
+	self addAndSuspendOn: customerBook customerCalled: paulMcCartney.
 	customerBook removeCustomerNamed: paulMcCartney.
 	 
-	self onCustomerBook: customerBook thatNumberOfActiveCustomersIs: 0 
+	self onCustomerBook: customerBook checkThatNumberOfActiveCustomersIs: 0 
 											     andNumberOfSuspendedCustomersIs: 0
 											     andNumberOfCustomersIs: 0
 											     andCheck: [self deny: (customerBook includesCustomerNamed: paulMcCartney)].
@@ -115,12 +110,11 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 21:59:00'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:38:13'!
 test07CanNotSuspendAnInvalidCustomer
 	
-	| customerBook johnLennon |
+	| johnLennon |
 			
-	customerBook := CustomerBook new.
 	johnLennon := 'John Lennon'.
 	customerBook addCustomerNamed: johnLennon.
 	
@@ -132,16 +126,16 @@ test07CanNotSuspendAnInvalidCustomer
 
 			! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 't g 9/20/2018 22:00:02'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'TA 9/21/2018 20:38:27'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
-	| customerBook johnLennon |
+	| johnLennon |
 			
 	customerBook := CustomerBook new.
 	johnLennon := 'John Lennon'.
-	customerBook addCustomerNamed: johnLennon.
-	customerBook suspendCustomerNamed: johnLennon.
 	
+	self addAndSuspendOn: customerBook customerCalled: johnLennon.
+
 	self tryTheNextAction: [ customerBook suspendCustomerNamed: johnLennon ]
 			expectingError: CantSuspend 
 			andCheck:[ :anError | 
@@ -151,8 +145,8 @@ test08CanNotSuspendAnAlreadySuspendedCustomer
 	! !
 
 
-!CustomerBookTest methodsFor: 'auxiliaresDeTests' stamp: 't g 9/20/2018 21:33:42'!
-addAndSuspendOn: aCustomerBook called: aName
+!CustomerBookTest methodsFor: 'auxiliaresDeTests' stamp: 'TA 9/21/2018 20:20:22'!
+addAndSuspendOn: aCustomerBook customerCalled: aName
 	
 	aCustomerBook addCustomerNamed: aName.
 	aCustomerBook suspendCustomerNamed: aName.
@@ -161,8 +155,8 @@ addAndSuspendOn: aCustomerBook called: aName
 	
 ! !
 
-!CustomerBookTest methodsFor: 'auxiliaresDeTests' stamp: 't g 9/20/2018 21:44:03'!
-onCustomerBook: aCustomerBook thatNumberOfActiveCustomersIs: aNumberOfActiveCustomers 
+!CustomerBookTest methodsFor: 'auxiliaresDeTests' stamp: 'TA 9/21/2018 20:24:42'!
+onCustomerBook: aCustomerBook checkThatNumberOfActiveCustomersIs: aNumberOfActiveCustomers 
 										    andNumberOfSuspendedCustomersIs: aNumberOfSuspendedCustomers 
 										    andNumberOfCustomersIs: aNumberOfCustomers andCheck: aBlockOfAssertions
 
@@ -215,7 +209,7 @@ tryTheNextAction: aBlock expectingError: anError andCheck: anAssertionBlock
 
 !classDefinition: #CustomerBook category: #'CodigoRepetido-Ejercicio'!
 Object subclass: #CustomerBook
-	instanceVariableNames: 'customers suspended'
+	instanceVariableNames: 'customers suspended aName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
@@ -262,28 +256,12 @@ numberOfSuspendedCustomers
 	
 	^suspended size! !
 
-!CustomerBook methodsFor: 'customer management' stamp: 'HAW 9/19/2018 08:41:50'!
+!CustomerBook methodsFor: 'customer management' stamp: 'TA 9/21/2018 21:25:23'!
 removeCustomerNamed: aName 
- 
-	1 to: customers size do: 
-	[ :index |
-		aName = (customers at: index)
-			ifTrue: [
-				customers removeAt: index.
-				^ aName 
-			] 
-	].
-
-	1 to: suspended size do: 	
-	[ :index |
-		aName = (suspended at: index)
-			ifTrue: [
-				suspended removeAt: index.
-				^ aName 
-			] 
-	].
 	
-	^ NotFound signal.
+	customers remove: aName ifAbsent: [suspended remove: aName ifAbsent: [^ NotFound signal]].		
+	^aName.
+
 ! !
 
 !CustomerBook methodsFor: 'customer management' stamp: 'HernanWilkinson 7/6/2011 17:52'!
@@ -305,6 +283,20 @@ suspendCustomerNamed: aName
 	
 	suspended add: aName
 ! !
+
+
+!CustomerBook methodsFor: 'Auxiliares' stamp: 'TA 9/21/2018 21:11:17'!
+findCustomer: aName andRemoveCustomerFrom: aCollectionOfCustomers
+
+	1 to: aCollectionOfCustomers size do: 	
+		[ :index |
+			aName = (aCollectionOfCustomers at: index)
+				ifTrue: [
+					aCollectionOfCustomers removeAt: index.
+					
+					^ aName.
+		].
+	].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
