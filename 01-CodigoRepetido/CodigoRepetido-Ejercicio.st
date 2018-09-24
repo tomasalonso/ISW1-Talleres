@@ -138,7 +138,7 @@ test08CanNotSuspendAnAlreadySuspendedCustomer
 	! !
 
 
-!CustomerBookTest methodsFor: 'auxiliares' stamp: 'TA 9/21/2018 20:20:22'!
+!CustomerBookTest methodsFor: 'auxiliar' stamp: 'TA 9/21/2018 20:20:22'!
 addAndSuspendOn: aCustomerBook customerCalled: aName
 	
 	aCustomerBook addCustomerNamed: aName.
@@ -148,7 +148,7 @@ addAndSuspendOn: aCustomerBook customerCalled: aName
 	
 ! !
 
-!CustomerBookTest methodsFor: 'auxiliares' stamp: 'T 9/24/2018 10:38:43'!
+!CustomerBookTest methodsFor: 'auxiliar' stamp: 'T 9/24/2018 10:38:43'!
 onCustomerBook: aCustomerBook checkThatNumberOfActiveCustomersIs: aNumberOfActiveCustomers 
 										    andNumberOfSuspendedCustomersIs: aNumberOfSuspendedCustomers 
 										    andNumberOfCustomersIs: aNumberOfCustomers andCheck: aBlockOfAssertions
@@ -163,7 +163,7 @@ onCustomerBook: aCustomerBook checkThatNumberOfActiveCustomersIs: aNumberOfActiv
 	
 ! !
 
-!CustomerBookTest methodsFor: 'auxiliares' stamp: 'T 9/24/2018 10:25:48'!
+!CustomerBookTest methodsFor: 'auxiliar' stamp: 'T 9/24/2018 10:25:48'!
 thisAction: aBlock	shouldNotTakeMoreThanMillisecond: aTime 
 	
 	| millisecondsAfterRunning millisecondsBeforeRunning |
@@ -176,7 +176,7 @@ thisAction: aBlock	shouldNotTakeMoreThanMillisecond: aTime
 	
 ! !
 
-!CustomerBookTest methodsFor: 'auxiliares' stamp: 't g 9/20/2018 21:57:59'!
+!CustomerBookTest methodsFor: 'auxiliar' stamp: 't g 9/20/2018 21:57:59'!
 tryTheNextAction: aBlock expectingError: anError andCheck: anAssertionBlock
 
 		[ aBlock value. self fail ]
