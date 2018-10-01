@@ -385,10 +385,10 @@ Numero subclass: #Entero
 	
 	^ aDivisor divideInteger: self! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:55'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'TA 10/1/2018 12:24:38'!
 // aDivisor 
 	
-	^self class with: value // aDivisor integerValue! !
+	^self class with: self integerValue // aDivisor integerValue! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'T 9/29/2018 15:02:09'!
 fibonacci
@@ -401,21 +401,21 @@ fibonacci
 	^ (self - one) fibonacci + (self - two) fibonacci
 		! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:00'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'TA 10/1/2018 12:25:08'!
 greatestCommonDivisorWith: anEntero 
 	
-	^self class with: (value gcd: anEntero integerValue)! !
+	^self class with: (self integerValue gcd: anEntero integerValue)! !
 
 
-!Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 21:01'!
+!Entero methodsFor: 'comparing' stamp: 'TA 10/1/2018 12:24:50'!
 = anObject
 
-	^(anObject isKindOf: self class) and: [ value = anObject integerValue ]! !
+	^(anObject isKindOf: self class) and: [ self integerValue = anObject integerValue ]! !
 
-!Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:17'!
+!Entero methodsFor: 'comparing' stamp: 'TA 10/1/2018 12:25:18'!
 hash
 
-	^value hash! !
+	^self integerValue hash! !
 
 
 !Entero methodsFor: 'initialization' stamp: 'T 9/29/2018 15:09:07'!
@@ -432,45 +432,34 @@ integerValue
 	^value! !
 
 
-!Entero methodsFor: 'printing' stamp: 'HAW 9/24/2018 08:53:19'!
+!Entero methodsFor: 'printing' stamp: 'TA 10/1/2018 12:26:35'!
 printOn: aStream
 
-	aStream print: value ! !
+	aStream print: self integerValue ! !
 
 
-!Entero methodsFor: 'testing' stamp: 'NR 9/23/2018 22:17:55'!
+!Entero methodsFor: 'testing' stamp: 'TA 10/1/2018 12:26:02'!
 isNegative
 	
-	^value < 0! !
+	^false! !
 
-!Entero methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 20:14'!
+!Entero methodsFor: 'testing' stamp: 'TA 10/1/2018 12:26:13'!
 isOne
 	
-	^value = 1! !
+	^false! !
 
-!Entero methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 20:12'!
+!Entero methodsFor: 'testing' stamp: 'TA 10/1/2018 12:26:18'!
 isZero
 	
-	^value = 0! !
+	^false! !
 
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'TA 9/29/2018 20:22:41'!
+!Entero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:22:41'!
 createFractionWith: aDividend
 
 	^Fraccion new initializeWith: aDividend over: self! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:48:49'!
-divideFraction: aFraction
-
-	^ aFraction numerator / (aFraction denominator * self)
-! !
-
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:48:36'!
-divideInteger: anInteger
-
-	^Fraccion with: anInteger over: self! !
-
-!Entero methodsFor: 'auxiliar operations' stamp: 'TA 9/29/2018 20:23:18'!
+!Entero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:23:18'!
 dividendForFractionWith: aDivisor
 	
  	| denominator greatestCommonDivisor numerator |
@@ -481,50 +470,62 @@ dividendForFractionWith: aDivisor
 
 	^denominator createFractionWith: numerator ! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'TA 9/29/2018 20:05:48'!
+!Entero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:05:48'!
 divisorForFractionWith: aDividend.
 	
 	^aDividend dividendForFractionWith: self.! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'TA 9/29/2018 20:33:54'!
+!Entero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:33:54'!
 isAValidDenominator! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'TA 9/29/2018 20:31:23'!
+!Entero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:31:23'!
 isAValidNumerator! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:47:14'!
-productFraction: aFraction
 
-	^ aFraction numerator * self / aFraction denominator
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:35:46'!
+divideFraction: aDividend
+
+	^ aDividend numerator / (aDividend denominator * self)
 ! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:47:55'!
-productInteger: anInteger
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:35:30'!
+divideInteger: aDividend
 
-	^ self class with: anInteger integerValue * value
+	^Fraccion with: aDividend over: self! !
+
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:35:12'!
+productFraction: aMultiplier
+
+	^ aMultiplier numerator * self / aMultiplier denominator
+! !
+
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:34:56'!
+productInteger: aMultiplier
+
+	^ self class with: aMultiplier integerValue * self integerValue
 	! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:47:32'!
-substractFraction: aFraction
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:34:40'!
+substractFraction: aMinuend
 
-	^ aFraction numerator - (self * aFraction denominator) / aFraction denominator
+	^ aMinuend numerator - (self * aMinuend denominator) / aMinuend denominator
 ! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:47:39'!
-substractInteger: anInteger
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:34:23'!
+substractInteger: aMinuend
 
-	^ self class with: anInteger integerValue - value.! !
+	^ self class with: aMinuend integerValue - self integerValue.! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 14:48:22'!
-sumFraction: aFraction
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:33:08'!
+sumFraction: anAdder
 
-	^ self * aFraction denominator + aFraction numerator / aFraction denominator
+	^ self * anAdder denominator + anAdder numerator / anAdder denominator
 ! !
 
-!Entero methodsFor: 'auxiliar operations' stamp: 'T 9/29/2018 15:19:25'!
-sumInteger: anInteger
+!Entero methodsFor: 'auxiliar operations' stamp: 'TA 10/1/2018 12:32:28'!
+sumInteger: anAdder
 
-	^self class with: anInteger integerValue + value
+	^self class with: anAdder integerValue + self integerValue
 ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -533,17 +534,20 @@ sumInteger: anInteger
 Entero class
 	instanceVariableNames: ''!
 
-!Entero class methodsFor: 'instance creation' stamp: 'NR 9/23/2018 22:17:16'!
+!Entero class methodsFor: 'error descriptions' stamp: 'NR 9/23/2018 22:17:16'!
 negativeFibonacciErrorDescription
 	^ ' Fibonacci no está definido aquí para enteros negativos'! !
 
-!Entero class methodsFor: 'instance creation' stamp: 'TA 9/29/2018 19:18:09'!
+
+!Entero class methodsFor: 'instance creation' stamp: 'TA 10/1/2018 12:43:47'!
 with: aValue 
 	
 	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
+	"Este if podria sacarse implementando un mensaje isAvalidInteger que no haga nada en entero y en cualquier otro objeto de un error"
+	
 	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
 	
-	^ (Entero subclasses detect: [:subclass | subclass isFor: aValue] ifNone: [^Entero new initializeWith: aValue]) new initializeWith: aValue
+	^ (self subclasses detect: [:subclass | subclass isFor: aValue] ifNone: [^self new initializeWith: aValue]) with: aValue
 	
 	! !
 
@@ -555,31 +559,39 @@ Entero subclass: #Cero
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 20:00:51'!
+!Cero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:00:51'!
 dividendForFractionWith: aDivisor
 
 	^self! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 20:12:05'!
+!Cero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:12:05'!
 divisorForFractionWith: aDividend.
 
 	self error: self class canNotDivideByZeroErrorDescription
 	! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 18:51:05'!
+!Cero methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:31:17'!
+isAValidNumerator
+
+	self error: 'una fraccion no puede ser cero' ! !
+
+
+!Cero methodsFor: 'value' stamp: 'TA 10/1/2018 12:28:33'!
+integerValue
+
+	^0! !
+
+
+!Cero methodsFor: 'arithmetic operations' stamp: 'TA 9/29/2018 18:51:05'!
 fibonacci
 
 	^ Entero with: 1! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 15:08:13'!
-initializeWith: aValue 
-	
-	super initializeWith: aValue! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 20:31:17'!
-isAValidNumerator
+!Cero methodsFor: 'testing' stamp: 'TA 10/1/2018 12:27:14'!
+isZero
 
-	self error: 'una fraccion no puede ser cero' ! !
+	^true! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -587,10 +599,21 @@ isAValidNumerator
 Cero class
 	instanceVariableNames: ''!
 
-!Cero class methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 14:56:32'!
+!Cero class methodsFor: 'instance creation' stamp: 'T 9/29/2018 14:56:32'!
 isFor: aValue
 
 	^ aValue = 0
+	! !
+
+!Cero class methodsFor: 'instance creation' stamp: 'TA 10/1/2018 12:28:52'!
+with: aValue 
+	
+	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
+	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
+	
+	(self isFor: aValue) ifTrue: [^self new].
+	
+	^Entero with: aValue
 	! !
 
 
@@ -601,20 +624,22 @@ Entero subclass: #Negativo
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 19:58:33'!
+!Negativo methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 19:58:33'!
 divisorForFractionWith: aDividend
 	
 	^aDividend negated / self negated! !
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 15:01:43'!
+
+!Negativo methodsFor: 'arithmetic operations' stamp: 'T 9/29/2018 15:01:43'!
 fibonacci
 
 	self error: self class negativeFibonacciErrorDescription! !
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 15:08:41'!
-initializeWith: aValue 
-	
-	super initializeWith: aValue! !
+
+!Negativo methodsFor: 'testing' stamp: 'TA 10/1/2018 12:27:46'!
+isNegative
+
+	^true! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -622,15 +647,28 @@ initializeWith: aValue
 Negativo class
 	instanceVariableNames: ''!
 
-!Negativo class methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 14:56:39'!
+!Negativo class methodsFor: 'error descriptions' stamp: 'T 9/29/2018 15:01:33'!
+negativeFibonacciErrorDescription
+
+	^ ' Fibonacci no está definido aquí para enteros negativos'! !
+
+
+!Negativo class methodsFor: 'instance creation' stamp: 'T 9/29/2018 14:56:39'!
 isFor: aValue
 
 	^ aValue < 0! !
 
-!Negativo class methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 15:01:33'!
-negativeFibonacciErrorDescription
-
-	^ ' Fibonacci no está definido aquí para enteros negativos'! !
+!Negativo class methodsFor: 'instance creation' stamp: 'TA 10/1/2018 12:17:59'!
+with: aValue 
+	
+	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
+	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
+	
+	(self isFor: aValue) ifTrue: [^self new initializeWith: aValue].
+	
+	^Entero with: aValue
+	
+	! !
 
 
 !classDefinition: #Uno category: #'Numero-Exercise'!
@@ -640,25 +678,33 @@ Entero subclass: #Uno
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
-!Uno methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 20:20:55'!
-createFractionWith: aDividend
-	
-	^aDividend! !
-
-!Uno methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 15:00:35'!
+!Uno methodsFor: 'arithmetic operations' stamp: 'T 9/29/2018 15:00:35'!
 fibonacci
 
 	^ self! !
 
-!Uno methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 15:08:45'!
-initializeWith: aValue 
-	
-	super initializeWith: aValue! !
 
-!Uno methodsFor: 'as yet unclassified' stamp: 'TA 9/29/2018 20:32:50'!
+!Uno methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:20:55'!
+createFractionWith: aDividend
+	
+	^aDividend! !
+
+!Uno methodsFor: 'fraction auxiliars' stamp: 'TA 9/29/2018 20:32:50'!
 isAValidDenominator
 
 	 self error: 'una fraccion no puede tener denominador 1 porque sino es un entero'! !
+
+
+!Uno methodsFor: 'value' stamp: 'TA 10/1/2018 12:28:22'!
+integerValue
+
+	^1! !
+
+
+!Uno methodsFor: 'testing' stamp: 'TA 10/1/2018 12:27:56'!
+isOne
+
+	^true! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -666,10 +712,22 @@ isAValidDenominator
 Uno class
 	instanceVariableNames: ''!
 
-!Uno class methodsFor: 'as yet unclassified' stamp: 'T 9/29/2018 14:56:44'!
+!Uno class methodsFor: 'instance creation' stamp: 'T 9/29/2018 14:56:44'!
 isFor: aValue
 
 	^ aValue = 1! !
+
+!Uno class methodsFor: 'instance creation' stamp: 'TA 10/1/2018 12:28:47'!
+with: aValue 
+	
+	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
+	aValue isInteger ifFalse: [ self error: 'aValue debe ser anInteger' ].
+	
+	(self isFor: aValue) ifTrue: [^self new].
+	
+	^Entero with: aValue
+	
+	! !
 
 
 !classDefinition: #Fraccion category: #'Numero-Exercise'!
@@ -761,58 +819,58 @@ printOn: aStream
 		print: denominator ! !
 
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:09'!
-divideFraction: aFraction
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:03'!
+divideFraction: aDividend
 
-	^(aFraction numerator * denominator) / (aFraction denominator * numerator)! !
+	^(aDividend numerator * denominator) / (aDividend denominator * numerator)! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:14'!
-divideInteger: anInteger
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:09'!
+divideInteger: aDividend
 
-	^ anInteger * denominator / numerator! !
+	^ aDividend * denominator / numerator! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:47:14'!
-productFraction: aFraction
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:18'!
+productFraction: aMultiplier
 
-	^(aFraction numerator * numerator) / (aFraction denominator * denominator)
+	^(aMultiplier numerator * numerator) / (aMultiplier denominator * denominator)
 	! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:20'!
-productInteger: anInteger
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:23'!
+productInteger: aMultiplier
 
-	^ anInteger * numerator / denominator! !
+	^ aMultiplier * numerator / denominator! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:05'!
-substractFraction: aFraction
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:35'!
+substractFraction: aMinuend
 
 	| newNumerator newDenominator |
 	
-	newNumerator := (aFraction numerator * denominator) - (aFraction denominator * numerator).
-	newDenominator := aFraction denominator * denominator.
+	newNumerator := (aMinuend numerator * denominator) - (aMinuend denominator * numerator).
+	newDenominator := aMinuend denominator * denominator.
 	
 	^newNumerator / newDenominator 
 
 ! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:28'!
-substractInteger: anInteger
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:39'!
+substractInteger: aMinuend
 
-	^ anInteger * denominator - numerator / denominator! !
+	^ aMinuend * denominator - numerator / denominator! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:34'!
-sumFraction: aFraction
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:52'!
+sumFraction: anAdder
 
 	| newNumerator newDenominator |
 	
-	newNumerator := (aFraction numerator * denominator) + (aFraction denominator * numerator).
-	newDenominator := aFraction denominator * denominator.
+	newNumerator := (anAdder numerator * denominator) + (anAdder denominator * numerator).
+	newDenominator := anAdder denominator * denominator.
 	
 	^newNumerator / newDenominator ! !
 
-!Fraccion methodsFor: 'operation auxiliars' stamp: 'T 9/29/2018 14:49:39'!
-sumInteger: anInteger
+!Fraccion methodsFor: 'operation auxiliars' stamp: 'TA 10/1/2018 12:40:57'!
+sumInteger: anAdder
 
-	^ anInteger * denominator + numerator / denominator! !
+	^ anAdder * denominator + numerator / denominator! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
