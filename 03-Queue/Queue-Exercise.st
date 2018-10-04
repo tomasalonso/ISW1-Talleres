@@ -128,69 +128,8 @@ test10CanNotNextWhenThereAreNoObjectsInTheQueue
 			self assert: anError messageText equals: Queue queueEmptyErrorDescription ].! !
 
 
-!classDefinition: #Queue category: #'Queue-Exercise'!
-Object subclass: #Queue
-	instanceVariableNames: 'contents'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Queue-Exercise'!
-
-!Queue methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:06:04'!
-dequeue
-	
-	^ (QueueController controllerFor: self) safeDequeue	! !
-
-!Queue methodsFor: 'as yet unclassified' stamp: 't g 10/1/2018 21:46:16'!
-enqueue: anObject
-
-	contents addLast: anObject! !
-
-!Queue methodsFor: 'as yet unclassified' stamp: 't g 10/1/2018 21:45:06'!
-isEmpty
-
-	^ contents isEmpty! !
-
-!Queue methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:06:17'!
-next
-
-	^ (QueueController controllerFor: self) safeNext	
-	! !
-
-!Queue methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:06:21'!
-safeDequeue
-
-	^ contents removeFirst ! !
-
-!Queue methodsFor: 'as yet unclassified' stamp: 'TA 10/2/2018 13:55:46'!
-safeNext
-
-	^ contents first! !
-
-!Queue methodsFor: 'as yet unclassified' stamp: 't g 10/1/2018 21:51:32'!
-size
-
-	^ contents size! !
-
-
-!Queue methodsFor: 'initialization' stamp: 't g 10/1/2018 21:44:38'!
-initialize
-
-	super initialize.
-	contents := OrderedCollection new.! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'Queue class' category: #'Queue-Exercise'!
-Queue class
-	instanceVariableNames: ''!
-
-!Queue class methodsFor: 'error descriptions' stamp: 't g 10/1/2018 21:55:29'!
-queueEmptyErrorDescription
-	^ 'Queue is empty'.! !
-
-
-!classDefinition: #QueueController category: #'Queue-Exercise'!
-Object subclass: #QueueController
+!classDefinition: #DequeueAndNextController category: #'Queue-Exercise'!
+Object subclass: #DequeueAndNextController
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -198,11 +137,11 @@ Object subclass: #QueueController
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'QueueController class' category: #'Queue-Exercise'!
-QueueController class
+!classDefinition: 'DequeueAndNextController class' category: #'Queue-Exercise'!
+DequeueAndNextController class
 	instanceVariableNames: ''!
 
-!QueueController class methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:03:59'!
+!DequeueAndNextController class methodsFor: 'instance creation' stamp: 'T 10/2/2018 20:03:59'!
 controllerFor: aQueue
 
 	| queueType |
@@ -214,19 +153,19 @@ controllerFor: aQueue
 
 
 !classDefinition: #EmptyQueue category: #'Queue-Exercise'!
-QueueController subclass: #EmptyQueue
+DequeueAndNextController subclass: #EmptyQueue
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Queue-Exercise'!
 
-!EmptyQueue methodsFor: 'as yet unclassified' stamp: 'TA 10/2/2018 13:53:14'!
+!EmptyQueue methodsFor: 'safe operations' stamp: 'TA 10/2/2018 13:53:14'!
 safeDequeue
 	
 	self error: Queue queueEmptyErrorDescription
  ! !
 
-!EmptyQueue methodsFor: 'as yet unclassified' stamp: 'TA 10/2/2018 13:53:23'!
+!EmptyQueue methodsFor: 'safe operations' stamp: 'TA 10/2/2018 13:53:23'!
 safeNext
 	
 	self error: Queue queueEmptyErrorDescription
@@ -238,38 +177,39 @@ safeNext
 EmptyQueue class
 	instanceVariableNames: ''!
 
-!EmptyQueue class methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:04:49'!
+!EmptyQueue class methodsFor: 'instance creation' stamp: 'T 10/2/2018 20:04:49'!
 for: aQueue
 
 	^ self new! !
 
-!EmptyQueue class methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:03:07'!
+!EmptyQueue class methodsFor: 'instance creation' stamp: 'T 10/2/2018 20:03:07'!
 isFor: aQueue
 
 	^ aQueue isEmpty! !
 
 
 !classDefinition: #QueueWithContent category: #'Queue-Exercise'!
-QueueController subclass: #QueueWithContent
+DequeueAndNextController subclass: #QueueWithContent
 	instanceVariableNames: 'queue'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Queue-Exercise'!
 
-!QueueWithContent methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:05:21'!
-initializeFor: aQueue
-
-	queue := aQueue! !
-
-!QueueWithContent methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:02:09'!
+!QueueWithContent methodsFor: 'safe operations' stamp: 'T 10/2/2018 20:02:09'!
 safeDequeue
 
 	^ queue safeDequeue ! !
 
-!QueueWithContent methodsFor: 'as yet unclassified' stamp: 'TA 10/2/2018 13:54:58'!
+!QueueWithContent methodsFor: 'safe operations' stamp: 'TA 10/2/2018 13:54:58'!
 safeNext
 
 	^ queue safeNext! !
+
+
+!QueueWithContent methodsFor: 'initialization' stamp: 'T 10/2/2018 20:05:21'!
+initializeFor: aQueue
+
+	queue := aQueue! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -277,12 +217,75 @@ safeNext
 QueueWithContent class
 	instanceVariableNames: ''!
 
-!QueueWithContent class methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:04:57'!
+!QueueWithContent class methodsFor: 'instance creation' stamp: 'T 10/2/2018 20:04:57'!
 for: aQueue
 
 	^ self new initializeFor: aQueue! !
 
-!QueueWithContent class methodsFor: 'as yet unclassified' stamp: 'T 10/2/2018 20:03:00'!
+!QueueWithContent class methodsFor: 'instance creation' stamp: 'T 10/2/2018 20:03:00'!
 isFor: aQueue
 
 	^ aQueue isEmpty not! !
+
+
+!classDefinition: #Queue category: #'Queue-Exercise'!
+Object subclass: #Queue
+	instanceVariableNames: 'contents'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Queue-Exercise'!
+
+!Queue methodsFor: 'initialization' stamp: 't g 10/1/2018 21:44:38'!
+initialize
+
+	super initialize.
+	contents := OrderedCollection new.! !
+
+
+!Queue methodsFor: 'operations' stamp: 't g 10/4/2018 15:57:23'!
+dequeue
+	
+	^ (DequeueAndNextController controllerFor: self) safeDequeue	! !
+
+!Queue methodsFor: 'operations' stamp: 't g 10/1/2018 21:46:16'!
+enqueue: anObject
+
+	contents addLast: anObject! !
+
+!Queue methodsFor: 'operations' stamp: 't g 10/4/2018 15:57:23'!
+next
+
+	^ (DequeueAndNextController controllerFor: self) safeNext	
+	! !
+
+
+!Queue methodsFor: 'testing' stamp: 't g 10/1/2018 21:45:06'!
+isEmpty
+
+	^ contents isEmpty! !
+
+!Queue methodsFor: 'testing' stamp: 't g 10/1/2018 21:51:32'!
+size
+
+	^ contents size! !
+
+
+!Queue methodsFor: 'safe operations' stamp: 'T 10/2/2018 20:06:21'!
+safeDequeue
+
+	^ contents removeFirst ! !
+
+!Queue methodsFor: 'safe operations' stamp: 'TA 10/2/2018 13:55:46'!
+safeNext
+
+	^ contents first! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Queue class' category: #'Queue-Exercise'!
+Queue class
+	instanceVariableNames: ''!
+
+!Queue class methodsFor: 'error descriptions' stamp: 't g 10/1/2018 21:55:29'!
+queueEmptyErrorDescription
+	^ 'Queue is empty'.! !
