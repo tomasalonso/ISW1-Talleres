@@ -142,17 +142,35 @@ balance
 	^ accounts sum: [:anAccount | anAccount balance ] ifEmpty: [0].! !
 
 
-!Portfolio methodsFor: 'testing' stamp: 't g 10/11/2018 21:54:15'!
+!Portfolio methodsFor: 'testing' stamp: 'TA 10/18/2018 14:15:25'!
 doesManage: anAccount
 
-	^ self = anAccount or: [(accounts allSatisfy: [ :anOwnAccount | (anOwnAccount doesManage: anAccount) not]) not].
-! !
+	^ self = anAccount or: (self on: accounts existsOneThat:  [ :anOwnAccount | anOwnAccount doesManage: anAccount]).
+	
+	! !
 
-!Portfolio methodsFor: 'testing' stamp: 't g 10/11/2018 21:40:22'!
+!Portfolio methodsFor: 'testing' stamp: 'TA 10/18/2018 14:15:18'!
 hasRegistered: aTransaction
 
-	^ (accounts allSatisfy: [ :anAccount | (anAccount hasRegistered: aTransaction) not ]) not.! !
+	^self on: accounts existsOneThat: [ :anAccount | anAccount hasRegistered: aTransaction].
+	! !
 
+!Portfolio methodsFor: 'testing' stamp: 'TA 10/18/2018 14:08:26'!
+on: aCollectionOfAccounts existsOneThat: aBlockClosure
+
+	^ (aCollectionOfAccounts allSatisfy: [ :anAccount | (aBlockClosure value: anAccount) not ]) not.! !
+
+
+!Portfolio methodsFor: 'transactions' stamp: 'TA 10/18/2018 12:52:20'!
+accounts
+
+	|aux|
+		
+	aux := Set new.
+	
+	accounts do: [:anAccount | aux addAll: anAccount accounts].
+	
+	^aux! !
 
 !Portfolio methodsFor: 'transactions' stamp: 't g 10/11/2018 21:59:22'!
 transactions 
@@ -164,10 +182,12 @@ transactions
 	
 	^ transactions! !
 
-!Portfolio methodsFor: 'transactions' stamp: 'HernanWilkinson 7/13/2011 18:40'!
+!Portfolio methodsFor: 'transactions' stamp: 'TA 10/18/2018 12:56:00'!
 transactionsOf: anAccount 
-
-	self shouldBeImplemented ! !
+	
+	(self doesManage: anAccount) ifTrue: [^ anAccount transactions].
+	
+	^self error: self class accountNotManagedMessageDescription! !
 
 
 !Portfolio methodsFor: 'as yet unclassified' stamp: 't g 10/11/2018 21:35:27'!
@@ -186,11 +206,15 @@ with: leftAccount with: rightAccount
 
 	^self withAll: (OrderedCollection with: leftAccount  with: rightAccount)! !
 
-!Portfolio class methodsFor: 'instance creation' stamp: 't g 10/11/2018 21:36:31'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'TA 10/18/2018 13:09:17'!
 withAll: aCollectionOfAccounts
-
-	^ self new initializeWith: aCollectionOfAccounts.
-	! !
+	|allAccounts|
+		
+	allAccounts := Bag new.
+	aCollectionOfAccounts do: [:anAccount | allAccounts addAll: anAccount accounts].
+	(allAccounts allSatisfy: [:anAccount | (allAccounts occurrencesOf: anAccount) = 1 ]) ifTrue: [^ self new initializeWith: aCollectionOfAccounts].
+	
+	^self error: Portfolio accountAlreadyManagedErrorMessage! !
 
 
 !Portfolio class methodsFor: 'error messages' stamp: 'HAW 5/8/2018 16:08:43'!
@@ -218,6 +242,11 @@ initialize
 	transactions := OrderedCollection new.! !
 
 
+!ReceptiveAccount methodsFor: 'transactions' stamp: 'TA 10/18/2018 12:50:01'!
+accounts
+
+	^Set with: self.! !
+
 !ReceptiveAccount methodsFor: 'transactions' stamp: 'HernanWilkinson 7/13/2011 18:37'!
 register: aTransaction
 
@@ -230,10 +259,10 @@ transactions
 	^ transactions copy! !
 
 
-!ReceptiveAccount methodsFor: 'balance' stamp: 't g 10/11/2018 21:29:00'!
+!ReceptiveAccount methodsFor: 'balance' stamp: 'TA 10/18/2018 14:15:07'!
 balance
 
-	 ^ transactions sum: [ :aTransaction | aTransaction valueForBalance ] ifEmpty: [0].! !
+	 ^ transactions inject: 0 into: [:sum :aTransaction | sum + aTransaction valueForBalance].! !
 
 
 !ReceptiveAccount methodsFor: 'testing' stamp: 't g 10/11/2018 21:52:33'!
