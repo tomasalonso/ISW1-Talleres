@@ -46,7 +46,7 @@ value
 	^ value! !
 
 
-!Deposit methodsFor: 'as yet unclassified' stamp: 't g 10/11/2018 21:25:59'!
+!Deposit methodsFor: 'auxiliar' stamp: 't g 10/11/2018 21:25:59'!
 valueForBalance
 
 	^ value! !
@@ -82,7 +82,7 @@ value
 	^ value! !
 
 
-!Withdraw methodsFor: 'as yet unclassified' stamp: 't g 10/11/2018 21:26:13'!
+!Withdraw methodsFor: 'auxiliar' stamp: 't g 10/11/2018 21:26:13'!
 valueForBalance
 
 	^ value * -1! !
@@ -128,6 +128,12 @@ balance
 
 	self subclassResponsibility ! !
 
+
+!SummarizingAccount methodsFor: 'accounts' stamp: 'T 10/18/2018 12:53:23'!
+accounts
+
+	self subclassResponsibility ! !
+
 
 !classDefinition: #Portfolio category: #'Portfolio-Ejercicio'!
 SummarizingAccount subclass: #Portfolio
@@ -155,22 +161,6 @@ hasRegistered: aTransaction
 	^self on: accounts existsOneThat: [ :anAccount | anAccount hasRegistered: aTransaction].
 	! !
 
-!Portfolio methodsFor: 'testing' stamp: 'TA 10/18/2018 14:08:26'!
-on: aCollectionOfAccounts existsOneThat: aBlockClosure
-
-	^ (aCollectionOfAccounts allSatisfy: [ :anAccount | (aBlockClosure value: anAccount) not ]) not.! !
-
-
-!Portfolio methodsFor: 'transactions' stamp: 'TA 10/18/2018 12:52:20'!
-accounts
-
-	|aux|
-		
-	aux := Set new.
-	
-	accounts do: [:anAccount | aux addAll: anAccount accounts].
-	
-	^aux! !
 
 !Portfolio methodsFor: 'transactions' stamp: 't g 10/11/2018 21:59:22'!
 transactions 
@@ -190,10 +180,28 @@ transactionsOf: anAccount
 	^self error: self class accountNotManagedMessageDescription! !
 
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 't g 10/11/2018 21:35:27'!
+!Portfolio methodsFor: 'initialization' stamp: 't g 10/11/2018 21:35:27'!
 initializeWith: aCollectionOfAccounts
 
 	accounts := aCollectionOfAccounts! !
+
+
+!Portfolio methodsFor: 'auxiliar' stamp: 'TA 10/18/2018 14:08:26'!
+on: aCollectionOfAccounts existsOneThat: aBlockClosure
+
+	^ (aCollectionOfAccounts allSatisfy: [ :anAccount | (aBlockClosure value: anAccount) not ]) not.! !
+
+
+!Portfolio methodsFor: 'accounts' stamp: 'TA 10/18/2018 12:52:20'!
+accounts
+
+	|aux|
+		
+	aux := Set new.
+	
+	accounts do: [:anAccount | aux addAll: anAccount accounts].
+	
+	^aux! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -242,11 +250,6 @@ initialize
 	transactions := OrderedCollection new.! !
 
 
-!ReceptiveAccount methodsFor: 'transactions' stamp: 'TA 10/18/2018 12:50:01'!
-accounts
-
-	^Set with: self.! !
-
 !ReceptiveAccount methodsFor: 'transactions' stamp: 'HernanWilkinson 7/13/2011 18:37'!
 register: aTransaction
 
@@ -276,3 +279,9 @@ hasRegistered: aTtransaction
 
 	^ transactions includes: aTtransaction 
 ! !
+
+
+!ReceptiveAccount methodsFor: 'accounts' stamp: 'TA 10/18/2018 12:50:01'!
+accounts
+
+	^Set with: self.! !
