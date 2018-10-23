@@ -552,10 +552,10 @@ portofolioTreeOf: aPortfolio namingAccountWith: aDictionary
 	
 	self shouldBeImplemented ! !
 
-!PortfolioTest methodsFor: 'test support' stamp: 'HAW 10/18/2018 16:38:05'!
+!PortfolioTest methodsFor: 'test support' stamp: 't g 10/22/2018 21:02:26'!
 registerCertificateOfDepositOf: anAmount during: aNumberOfDays at: anInteresRate on: anAccount
 
-	self shouldBeImplemented ! !
+	^ Investment register: anAmount during: aNumberOfDays withRate: anInteresRate on: anAccount! !
 
 !PortfolioTest methodsFor: 'test support' stamp: 't g 10/18/2018 21:31:13'!
 registerTransferOf: anAmount from: fromAccount to: toAccount

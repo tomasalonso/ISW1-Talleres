@@ -133,6 +133,45 @@ for: aValue
 	^ self new initializeFor: aValue ! !
 
 
+!classDefinition: #InvestmentLeg category: #'PortfolioTreePrinter-Ejercicio'!
+AccountTransaction subclass: #InvestmentLeg
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTreePrinter-Ejercicio'!
+
+!InvestmentLeg methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:52:13'!
+affectBalance: currentBalance  
+
+	self subclassResponsibility! !
+
+
+!classDefinition: #InvestmentDeposit category: #'PortfolioTreePrinter-Ejercicio'!
+InvestmentLeg subclass: #InvestmentDeposit
+	instanceVariableNames: 'invested time rate'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTreePrinter-Ejercicio'!
+
+!InvestmentDeposit methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:51:51'!
+affectBalance: currentBalance  
+
+	^ currentBalance - self value! !
+
+
+!classDefinition: #InvestmentEarnings category: #'PortfolioTreePrinter-Ejercicio'!
+InvestmentLeg subclass: #InvestmentEarnings
+	instanceVariableNames: 'invested time rate'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTreePrinter-Ejercicio'!
+
+!InvestmentEarnings methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:52:00'!
+affectBalance: currentBalance  
+
+	^ currentBalance - self value! !
+
+
 !classDefinition: #TransferLeg category: #'PortfolioTreePrinter-Ejercicio'!
 AccountTransaction subclass: #TransferLeg
 	instanceVariableNames: 'transfer'
@@ -302,6 +341,67 @@ AccountTransferNet class
 of: aReceptiveAccount
 
 	^ self new initializeWith: aReceptiveAccount ! !
+
+
+!classDefinition: #Investment category: #'PortfolioTreePrinter-Ejercicio'!
+Object subclass: #Investment
+	instanceVariableNames: 'value time rate investedLeg earningsLeg'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTreePrinter-Ejercicio'!
+
+!Investment methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:27:57'!
+affectBalance: currentBalance  
+
+	^ currentBalance - self value! !
+
+!Investment methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 21:05:58'!
+earningsLeg
+	
+	^earningsLeg ! !
+
+!Investment methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:51:00'!
+initializeFor: aSum for: aTime withRate: aRate
+
+	value := aSum.
+	time := aTime.
+	rate := aRate.
+	investedLeg := InvestmentDeposit relatedTo: self .
+	earningsLeg := InvestmentEarnings relatedTo: self.
+! !
+
+!Investment methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 21:05:34'!
+investedLeg
+	
+	^investedLeg ! !
+
+!Investment methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:51:11'!
+value
+
+	^ value! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Investment class' category: #'PortfolioTreePrinter-Ejercicio'!
+Investment class
+	instanceVariableNames: ''!
+
+!Investment class methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 20:57:15'!
+of: anAmount during: aNumberOfDays at: anInterestRate
+
+	^self new initializeFor: anAmount for: aNumberOfDays withRate: anInterestRate! !
+
+!Investment class methodsFor: 'as yet unclassified' stamp: 't g 10/22/2018 21:10:02'!
+register: aSum during: aTime withRate: aRate on: anAccount
+
+	| investment |
+	
+	investment := self of: aSum during: aTime at: aRate.
+	anAccount register: investment investedLeg.
+	anAccount register: investment earningsLeg.
+	
+	^ investment
+! !
 
 
 !classDefinition: #SummarizingAccount category: #'PortfolioTreePrinter-Ejercicio'!
