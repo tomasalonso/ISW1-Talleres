@@ -34,12 +34,12 @@ visitTransferWithdraw: aTransferWithdraw
 visitWithdraw: aWithdraw! !
 
 
-!AccountInvestmentEarnings methodsFor: 'evaluating' stamp: 'TA 10/23/2018 17:04:39'!
+!AccountInvestmentEarnings methodsFor: 'evaluating' stamp: 'T 10/25/2018 14:09:51'!
 value
 
 	earnings := 0.
 	
-	accounts transactionsDo: [ :aTransaction | aTransaction accept: self ].
+	accounts visitTransactionsWith: self.
 	
 	^ earnings ! !
 
@@ -95,12 +95,12 @@ visitTransferWithdraw: aTransferWithdraw
 visitWithdraw: aWithdraw! !
 
 
-!AccountInvestmentNet methodsFor: 'evaluating' stamp: 'TA 10/23/2018 16:24:08'!
+!AccountInvestmentNet methodsFor: 'evaluating' stamp: 'T 10/25/2018 14:09:58'!
 value
 
 	net := 0.
 	
-	accounts transactionsDo: [ :aTransaction | aTransaction accept: self ].
+	accounts visitTransactionsWith: self.
 	
 	^ net! !
 
@@ -168,12 +168,12 @@ initializeWith: aReceptiveAccount
 	accounts := aReceptiveAccount ! !
 
 
-!AccountSummaryLines methodsFor: 'evaluating' stamp: 't g 10/22/2018 19:54:49'!
+!AccountSummaryLines methodsFor: 'evaluating' stamp: 'T 10/25/2018 14:11:37'!
 value
 
 	lines := OrderedCollection new.
 	
-	accounts transactionsDo: [ :aTransaction | aTransaction accept: self ].
+	accounts visitTransactionsWith: self.
 	
 	^ lines! !
 
@@ -513,12 +513,12 @@ visitTransferWithdraw: aTransferWithdraw
 visitWithdraw: aWithdraw! !
 
 
-!AccountTransferNet methodsFor: 'evaluating' stamp: 't g 10/22/2018 20:11:08'!
+!AccountTransferNet methodsFor: 'evaluating' stamp: 'T 10/25/2018 14:09:33'!
 value
 
 	net := 0.
 	
-	accounts transactionsDo: [ :aTransaction | aTransaction accept: self ].
+	accounts visitTransactionsWith: self.
 	
 	^ net! !
 
@@ -616,7 +616,7 @@ Object subclass: #PortfolioTree
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!PortfolioTree methodsFor: 'visiting' stamp: 'TA 10/25/2018 15:06:55'!
+!PortfolioTree methodsFor: 'visiting' stamp: 'T 10/25/2018 14:19:25'!
 visitPortfolio: aPortfolio
 
 	| whiteSpace |
@@ -626,7 +626,7 @@ visitPortfolio: aPortfolio
 	lines add: whiteSpace, (dictionary at: aPortfolio).
 	
 	spaces := spaces + 1.
-	aPortfolio accountsDo: [ :anAccount | anAccount accept: self ].
+	aPortfolio visitAccountsWith: self.
 	spaces:= spaces - 1.
 	! !
 
@@ -641,14 +641,14 @@ visitReceptiveAccount: anAccount
 	! !
 
 
-!PortfolioTree methodsFor: 'evaluating' stamp: 'TA 10/25/2018 14:51:05'!
+!PortfolioTree methodsFor: 'evaluating' stamp: 'T 10/25/2018 14:14:44'!
 value
 
 	lines := OrderedCollection new.
 	
 	lines add: (dictionary  at: portfolio).
 	
-	portfolio accountsDo: [ :anAccount | anAccount accept: self ].
+	portfolio visitAccountsWith: self.
 	
 	^ lines! !
 
@@ -675,54 +675,21 @@ of: aPortfolio namingAccountWith: aDictionary
 
 !classDefinition: #ReversePortfolioTree category: #'PortfolioTreePrinter-Ejercicio'!
 Object subclass: #ReversePortfolioTree
-	instanceVariableNames: 'spaces portfolio dictionary lines'
+	instanceVariableNames: 'value'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!ReversePortfolioTree methodsFor: 'visiting' stamp: 'TA 10/25/2018 15:16:36'!
-visitPortfolio: aPortfolio
-
-	| whiteSpace |
-
-	spaces := spaces + 1.
-	aPortfolio reverseAccountsDo: [ :anAccount | anAccount accept: self ].
-	spaces:= spaces - 1.
+!ReversePortfolioTree methodsFor: 'initialization' stamp: 'T 10/25/2018 14:23:08'!
+initializeWith: aTree
 	
-	whiteSpace := (String new: spaces) atAllPut: $ .
-	lines add: whiteSpace, (dictionary at: aPortfolio).
-	
-	! !
-
-!ReversePortfolioTree methodsFor: 'visiting' stamp: 'TA 10/25/2018 15:16:28'!
-visitReceptiveAccount: anAccount
-
-	| whiteSpace |
-	
-	whiteSpace := (String new: spaces) atAllPut: $ .
-	
-	lines add: whiteSpace, (dictionary  at: anAccount).
-	! !
+	value := aTree reverse! !
 
 
-!ReversePortfolioTree methodsFor: 'initialization' stamp: 'TA 10/25/2018 15:15:28'!
-initializeWith: aPortfolio namingWith: aDictionary 
-	
-	portfolio := aPortfolio. 
-	dictionary := aDictionary.
-	spaces := 1.! !
-
-
-!ReversePortfolioTree methodsFor: 'evaluating' stamp: 'TA 10/25/2018 15:17:34'!
+!ReversePortfolioTree methodsFor: 'evaluating' stamp: 'T 10/25/2018 14:23:22'!
 value
 
-	lines := OrderedCollection new.
-	
-	portfolio reverseAccountsDo: [ :anAccount | anAccount accept: self ].
-	
-	lines add: (dictionary  at: portfolio).
-	
-	^ lines! !
+	^ value! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -730,10 +697,10 @@ value
 ReversePortfolioTree class
 	instanceVariableNames: ''!
 
-!ReversePortfolioTree class methodsFor: 'instance creation' stamp: 'TA 10/25/2018 15:15:19'!
+!ReversePortfolioTree class methodsFor: 'instance creation' stamp: 'T 10/25/2018 14:22:43'!
 of: aPortfolio namingAccountWith: aDictionary
 
-	^self new initializeWith: aPortfolio namingWith: aDictionary 
+	^self new initializeWith: (PortfolioTree of: aPortfolio namingAccountWith: aDictionary) value
 	! !
 
 
@@ -818,21 +785,16 @@ initializeWithAll: aCollectionOfAccounts
 	accounts := aCollectionOfAccounts   ! !
 
 
-!Portfolio methodsFor: 'accounts' stamp: 'TA 10/25/2018 14:45:26'!
-accountsDo: aBlock
-
-	^ accounts do: aBlock ! !
-
-!Portfolio methodsFor: 'accounts' stamp: 'TA 10/25/2018 15:16:53'!
-reverseAccountsDo: aBlock
-
-	^ accounts reverse do: aBlock ! !
-
 
 !Portfolio methodsFor: 'visitors' stamp: 'TA 10/25/2018 14:39:48'!
 accept: aVisitor
 
 	aVisitor visitPortfolio: self! !
+
+!Portfolio methodsFor: 'visitors' stamp: 'T 10/25/2018 14:15:41'!
+visitAccountsWith: aVisitor
+
+	accounts do: [ :anAccount | anAccount accept: aVisitor ].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -919,11 +881,6 @@ transactions
 
 	^ transactions copy! !
 
-!ReceptiveAccount methodsFor: 'transactions' stamp: 't g 10/22/2018 19:55:15'!
-transactionsDo: aBlock
-
-	^ self transactions do: aBlock ! !
-
 
 !ReceptiveAccount methodsFor: 'testing' stamp: 'HAW 10/18/2018 16:31:24'!
 doesManage: anAccount
@@ -938,11 +895,15 @@ hasRegistered: aTtransaction
 ! !
 
 
-
 !ReceptiveAccount methodsFor: 'visitors' stamp: 'TA 10/25/2018 14:40:22'!
 accept: aVisitor
 
 	aVisitor visitReceptiveAccount: self! !
+
+!ReceptiveAccount methodsFor: 'visitors' stamp: 'T 10/25/2018 14:18:23'!
+visitTransactionsWith: aVisitor
+
+	transactions do: [ :aTransaction | aTransaction accept: aVisitor ].! !
 
 
 !classDefinition: #Transfer category: #'PortfolioTreePrinter-Ejercicio'!
