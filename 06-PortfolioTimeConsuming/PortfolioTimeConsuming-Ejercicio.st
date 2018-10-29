@@ -53,7 +53,7 @@ initializeFor: aReceptiveAccount
 	account := aReceptiveAccount ! !
 
 
-!AccountSummaryWithInvestmentEarnings methodsFor: 'evaluating' stamp: 't g 10/25/2018 21:54:58'!
+!AccountSummaryWithInvestmentEarnings methodsFor: 'evaluating' stamp: 't g 10/29/2018 20:08:21'!
 lines 
 
 	| lines investmentEarnings semaphore |
@@ -65,9 +65,9 @@ lines
 	lines := (AccountSummary for: account) lines.
 	
 	semaphore wait.
-	
+
 	lines add: 'Ganancias por ', investmentEarnings printString.
-	
+
 	 ^ lines! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -682,6 +682,41 @@ InvestmentNetVisitor class
 for: aReceptiveAccount 
 	
 	^ self new initializeFor: aReceptiveAccount ! !
+
+
+!classDefinition: #Future category: #'PortfolioTimeConsuming-Ejercicio'!
+Object subclass: #Future
+	instanceVariableNames: 'semaphore result'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTimeConsuming-Ejercicio'!
+
+!Future methodsFor: 'as yet unclassified' stamp: 't g 10/29/2018 20:26:50'!
+doesNotUnderstand
+
+	semaphore wait.
+	
+	! !
+
+!Future methodsFor: 'as yet unclassified' stamp: 't g 10/29/2018 20:25:23'!
+promising: aBlock
+
+	semaphore := Semaphore new.
+	
+	[ result := aBlock value. semaphore signal. ] fork.
+	
+	^ self! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Future class' category: #'PortfolioTimeConsuming-Ejercicio'!
+Future class
+	instanceVariableNames: ''!
+
+!Future class methodsFor: 'as yet unclassified' stamp: 't g 10/29/2018 20:23:47'!
+promising: aBlock
+
+	^ self new promising: aBlock! !
 
 
 !classDefinition: #ReversePortfolioTreePrinter category: #'PortfolioTimeConsuming-Ejercicio'!
