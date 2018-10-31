@@ -679,11 +679,10 @@ Object subclass: #Future
 	poolDictionaries: ''
 	category: 'PortfolioTimeConsuming-Ejercicio'!
 
-!Future methodsFor: 'accessing' stamp: 't g 10/31/2018 21:07:33'!
+!Future methodsFor: 'accessing' stamp: 'T 10/31/2018 20:23:17'!
 value
 
 	semaphore wait.
-	semaphore signal.
 
 	^ result.! !
 
