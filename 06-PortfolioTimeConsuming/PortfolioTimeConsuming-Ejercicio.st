@@ -11,19 +11,13 @@ initializeFor: aReceptiveAccount
 	account := aReceptiveAccount ! !
 
 
-!AccountSummaryWithAllInvestmentInformation methodsFor: 'evaluating' stamp: 't g 10/25/2018 21:55:18'!
+!AccountSummaryWithAllInvestmentInformation methodsFor: 'evaluating' stamp: 't g 10/31/2018 21:06:49'!
 lines 
 
-	| lines investmentEarnings semaphore |
+	| lines investmentEarnings |
 	
-	semaphore := Semaphore new.
-
-	[ investmentEarnings := (InvestmentNetVisitor for: account) value. semaphore signal ] fork value.
-	
+	investmentEarnings := Future promising: [ (InvestmentNetVisitor for: account) value. ].
 	lines := (AccountSummaryWithInvestmentEarnings for: account) lines.
-	
-	semaphore wait.
-	
 	lines add: 'Inversiones por ', investmentEarnings value printString.
 	
 	 ^ lines! !
@@ -53,20 +47,14 @@ initializeFor: aReceptiveAccount
 	account := aReceptiveAccount ! !
 
 
-!AccountSummaryWithInvestmentEarnings methodsFor: 'evaluating' stamp: 't g 10/29/2018 20:08:21'!
+!AccountSummaryWithInvestmentEarnings methodsFor: 'evaluating' stamp: 't g 10/31/2018 21:09:13'!
 lines 
 
-	| lines investmentEarnings semaphore |
+	| lines investmentEarnings |
 	
-	semaphore := Semaphore new.
-
-	[ investmentEarnings := (InvestmentEarningVisitor for: account) value. semaphore signal ] fork value.
-	
+	investmentEarnings := Future promising: [ (InvestmentEarningVisitor for: account) value. ].
 	lines := (AccountSummary for: account) lines.
-	
-	semaphore wait.
-
-	lines add: 'Ganancias por ', investmentEarnings printString.
+	lines add: 'Ganancias por ', investmentEarnings value printString.
 
 	 ^ lines! !
 
@@ -691,14 +679,16 @@ Object subclass: #Future
 	poolDictionaries: ''
 	category: 'PortfolioTimeConsuming-Ejercicio'!
 
-!Future methodsFor: 'as yet unclassified' stamp: 't g 10/29/2018 20:26:50'!
-doesNotUnderstand
+!Future methodsFor: 'accessing' stamp: 't g 10/31/2018 21:07:33'!
+value
 
 	semaphore wait.
-	
-	! !
+	semaphore signal.
 
-!Future methodsFor: 'as yet unclassified' stamp: 't g 10/29/2018 20:25:23'!
+	^ result.! !
+
+
+!Future methodsFor: 'initialization' stamp: 't g 10/29/2018 20:25:23'!
 promising: aBlock
 
 	semaphore := Semaphore new.
@@ -713,7 +703,7 @@ promising: aBlock
 Future class
 	instanceVariableNames: ''!
 
-!Future class methodsFor: 'as yet unclassified' stamp: 't g 10/29/2018 20:23:47'!
+!Future class methodsFor: 'instance creation' stamp: 't g 10/29/2018 20:23:47'!
 promising: aBlock
 
 	^ self new promising: aBlock! !
