@@ -1,67 +1,52 @@
 !classDefinition: #TerniLapilliConsoleViewTest category: #TerniLapilli!
 TestCase subclass: #TerniLapilliConsoleViewTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'view game console lines'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 19:22:19'!
-functionalException
-	^ Error - MessageNotUnderstood.! !
-
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'A T G 11/8/2018 21:24:23'!
-in: aLines nextLines: aNumberLines
-
-	aNumberLines timesRepeat: [ aLines nextLine ].! !
-
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:43:14'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:47:11'!
 test01JustOnePlayerAddsATokenAndConsoleRegister
 
-	| game console lines |
-
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
 	game putXAt: 2@2.
 	
 	lines _ console lines.
-	self assert: 'X marco en 2@2' equals: lines nextLine.
-	self assert: 'Estado: Jugando O' equals: lines nextLine.
-	self assert: lines atEnd.! !
+	self assert: 'X marco en 2@2' equals: lines nextLine;
+		assert: 'Estado: Jugando O' equals: lines nextLine;
+		assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:10'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:47:18'!
 test02BothPlayerAddTokensAndConsoleRegister
 
-	| game console lines |
-
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 1@1.
-	game putOAt: 2@2.
+	game putXAt: 1@1;
+		putOAt: 2@2.
 		
 	lines _ console lines.
-	self assert: 'X marco en 1@1' equals: lines nextLine.
-	self assert: 'Estado: Jugando O' equals: lines nextLine.
-	self assert: 'O marco en 2@2' equals: lines nextLine.
-	self assert: 'Estado: Jugando X' equals: lines nextLine.
+	self assert: 'X marco en 1@1' equals: lines nextLine;
+		assert: 'Estado: Jugando O' equals: lines nextLine;
+		assert: 'O marco en 2@2' equals: lines nextLine;
+		assert: 'Estado: Jugando X' equals: lines nextLine;
 	
-	self assert: lines atEnd.! !
+		assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:14'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:47:22'!
 test03PlayerOWinsWhenPlacingAndConsoleRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 2@2.
-	game putOAt: 1@1.
-	game putXAt: 3@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@2;
+		putOAt: 1@1;
+		putXAt: 3@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 
 	lines _ console lines.
 	
@@ -71,19 +56,17 @@ test03PlayerOWinsWhenPlacingAndConsoleRegister
 	
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:32'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:00:43'!
 test04PlayerXWinsWhenPlacingAndConsoleRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 1@1.
-	game putOAt: 2@2.
-	game putXAt: 1@2.
-	game putOAt: 3@2.
-	game putXAt: 1@3.
+	game putXAt: 1@1;
+		putOAt: 2@2;
+		putXAt: 1@2;
+		putOAt: 3@2;
+		putXAt: 1@3.
 
 	lines _ console lines.
 	
@@ -93,20 +76,18 @@ test04PlayerXWinsWhenPlacingAndConsoleRegister
 	
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:37'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:47:33'!
 test05XSlidesWithoutWinningAndConsoleRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 2@2.
-	game putOAt: 2@1.
-	game putXAt: 3@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@2;
+		putOAt: 2@1;
+		putXAt: 3@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@2) to: (1@1).
 	
@@ -114,25 +95,23 @@ test05XSlidesWithoutWinningAndConsoleRegister
 	
 	self in: lines nextLines: 12.
 	
-	self assert: 'X deslizó hasta 1@1 desde 2@2' equals: lines nextLine.
-	self assert: 'Estado: Jugando O' equals: lines nextLine.
+	self assert: 'X deslizó hasta 1@1 desde 2@2' equals: lines nextLine;
+		assert: 'Estado: Jugando O' equals: lines nextLine;
 	
-	self assert: lines atEnd.! !
+		assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:40'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:47:50'!
 test06OSlidesWithoutWinningAndConsoleRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 2@2.
-	game putOAt: 2@1.
-	game putXAt: 3@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@2;
+		putOAt: 2@1;
+		putXAt: 3@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@2) to: (1@1).
 	game slideOFrom: (2@1) to: (2@2).
@@ -141,25 +120,23 @@ test06OSlidesWithoutWinningAndConsoleRegister
 	
 	self in: lines nextLines: 14.
 	
-	self assert: 'O deslizó hasta 2@2 desde 2@1' equals: lines nextLine.
-	self assert: 'Estado: Jugando X' equals: lines nextLine.
+	self assert: 'O deslizó hasta 2@2 desde 2@1' equals: lines nextLine;
+		assert: 'Estado: Jugando X' equals: lines nextLine;	
 	
-	self assert: lines atEnd.! !
+		assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:44'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:48:28'!
 test07XSlidesAndWinsAndConsoleRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 2@2.
-	game putOAt: 2@1.
-	game putXAt: 1@2.
-	game putOAt: 2@3.
-	game putXAt: 1@3.
-	game putOAt: 3@3.
+	game putXAt: 2@2;
+		putOAt: 2@1;
+		putXAt: 1@2;
+		putOAt: 2@3;
+		putXAt: 1@3;
+		putOAt: 3@3.
 	
 	game slideXFrom: (2@2) to: (1@1).
 	
@@ -167,25 +144,23 @@ test07XSlidesAndWinsAndConsoleRegister
 	
 	self in: lines nextLines: 12.
 	
-	self assert: 'X deslizó hasta 1@1 desde 2@2' equals: lines nextLine.
-	self assert: 'Estado: Juego terminado - ¡Ganó X!!' equals: lines nextLine.
+	self assert: 'X deslizó hasta 1@1 desde 2@2' equals: lines nextLine;
+		assert: 'Estado: Juego terminado - ¡Ganó X!!' equals: lines nextLine.
 	
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:46'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:49:42'!
 test08OSlidesAndWinsAndConsoleRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 2@1.
-	game putOAt: 2@2.
-	game putXAt: 2@3.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 2@2;
+		putXAt: 2@3;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@1) to: (3@1).
 	game slideOFrom: (2@2) to: (1@1).
@@ -194,21 +169,19 @@ test08OSlidesAndWinsAndConsoleRegister
 	
 	self in: lines nextLines: 14.
 	
-	self assert: 'O deslizó hasta 1@1 desde 2@2' equals: lines nextLine.
-	self assert: 'Estado: Juego terminado - ¡Ganó O!!' equals: lines nextLine.
+	self assert: 'O deslizó hasta 1@1 desde 2@2' equals: lines nextLine;
+		assert: 'Estado: Juego terminado - ¡Ganó O!!' equals: lines nextLine;
 	
-	self assert: lines atEnd.! !
+		assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:53:49'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 11:53:14'!
 test09PlayersMakeWrongMarksAndConsoleDoesntRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 1@1.
-	game putOAt: 2@2.
+	game putXAt: 1@1;
+		putOAt: 2@2.
 
 	self
 		should: [ game putOAt: 3@3 ]
@@ -225,28 +198,26 @@ test09PlayersMakeWrongMarksAndConsoleDoesntRegister
 	
 	self in: lines nextLines: 2.
 	
-	self assert: 'O marco en 2@2' equals: lines nextLine.
-	self assert: 'Estado: Jugando X' equals: lines nextLine.
-	self assert: 'X marco en 3@3' equals: lines nextLine.
-	self assert: 'Estado: Jugando O' equals: lines nextLine.
+	self assert: 'O marco en 2@2' equals: lines nextLine;
+		assert: 'Estado: Jugando X' equals: lines nextLine;
+		assert: 'X marco en 3@3' equals: lines nextLine;
+		assert: 'Estado: Jugando O' equals: lines nextLine.
 	
 	
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:33:31'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:00:31'!
 test10PlayersMakeWrongSlidesAndConsoleDoesntRegister
-
-	| game console lines |
 
 	game _ TerniLapilli new.
 	console _ TerniLapilliConsoleObserver on: game.
 	
-	game putXAt: 2@1.
-	game putOAt: 2@2.
-	game putXAt: 1@1.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 2@2;
+		putXAt: 1@1;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@1) to: (3@1).
 	
@@ -264,231 +235,167 @@ test10PlayersMakeWrongSlidesAndConsoleDoesntRegister
 	
 	self in: lines nextLines: 12.
 	
-	self assert: 'X deslizó hasta 3@1 desde 2@1' equals: lines nextLine.
-	self assert: 'Estado: Jugando O' equals: lines nextLine.
-	self assert: 'O deslizó hasta 2@3 desde 1@3' equals: lines nextLine.
-	self assert: 'Estado: Jugando X' equals: lines nextLine.
-	
-	
-	self assert: lines atEnd.! !
+	self assert: 'X deslizó hasta 3@1 desde 2@1' equals: lines nextLine;
+		assert: 'Estado: Jugando O' equals: lines nextLine;
+		assert: 'O deslizó hasta 2@3 desde 1@3' equals: lines nextLine;
+		assert: 'Estado: Jugando X' equals: lines nextLine;
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 10:58:05'!
+		assert: lines atEnd.! !
+
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:09:28'!
 test11XmarksAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
 	game putXAt: 2@2.
-	lines _ game view board.
+	lines _ view board.
 	
-	self assert: ' | | ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' |X| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' | | ' equals: lines nextLine.
-	self assert: 'Playing O' equals: lines nextLine.
-	
+	self assertBoardWithLine1: ' | | ' line2: ' |X| ' line3: ' | | ' state: 'Playing O'.
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 00:23:49'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:08:52'!
 test12OmarksAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 2@2.
-	game putOAt: 1@1.
+	game putXAt: 2@2;
+		putOAt: 1@1.
 	
-	lines _  game view board.
+	lines _  view board.
 	
-	self assert: 'O| | ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' |X| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' | | ' equals: lines nextLine.
-	self assert: 'Playing X' equals: lines nextLine.
-	
+	self assertBoardWithLine1: 'O| | ' line2: ' |X| ' line3: ' | | ' state: 'Playing X'.
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:22:52'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:08:14'!
 test13BothplayersPutAllTheirMarksAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 2@1.
-	lines _  game view board.
-	game putOAt: 2@2.
-	lines _  game view board.
-	game putXAt: 1@1.
-	lines _  game view board.
-	game putOAt: 1@2.
-	lines _  game view board.
-	game putXAt: 3@3.
-	lines _  game view board.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 2@2;
+		putXAt: 1@1;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.	
 	
+	lines _  view board.
 	
-	lines _  game view board.
-	
-	self assert: 'X|O|O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'X|O| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' | |X' equals: lines nextLine.
-	self assert: 'Playing X' equals: lines nextLine.
-	
+	self assertBoardWithLine1: 'X|O|O' line2: 'X|O| '  line3: ' | |X' state: 'Playing X'.
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 00:41:31'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:07:30'!
 test14PlayerOWinsWhenPlacingAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 2@1.
-	game putOAt: 1@1.
-	game putXAt: 2@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 1@1;
+		putXAt: 2@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
+		
+	lines _  view board.
 	
-	
-	lines _  game view board.
-	
-	self assert: 'O|O|O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'X|X| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' | |X' equals: lines nextLine.
-	self assert: 'O Won!!' equals: lines nextLine.
-	
+	self assertBoardWithLine1: 'O|O|O' line2: 'X|X| ' line3: ' | |X' state: 'O Won!!'.
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:04:46'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:06:55'!
 test15PlayerXWinsWhenPlacingAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 1@1.
-	game putOAt: 2@1.
-	game putXAt: 1@2.
-	game putOAt: 2@2.
-	game putXAt: 1@3.
+	game putXAt: 1@1;
+		putOAt: 2@1;
+		putXAt: 1@2;
+		putOAt: 2@2;
+		putXAt: 1@3.	
 	
+	lines _  view board.
 	
-	lines _  game view board.
-	
-	self assert: 'X|X|X' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'O|O| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' | | ' equals: lines nextLine.
-	self assert: 'X Won!!' equals: lines nextLine.
-	
+	self assertBoardWithLine1: 'X|X|X' line2: 'O|O| ' line3: ' | | ' state: 'X Won!!'.
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:06:24'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:06:16'!
 test16PlayerXSlidesAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 2@1.
-	game putOAt: 3@2.
-	game putXAt: 2@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 3@2;
+		putXAt: 2@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@1) to: (3@1).
 	
-	lines _  game view board.
+	lines _  view board.
 	
-	self assert: ' |O|O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' |X| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'X|O|X' equals: lines nextLine.
-	self assert: 'Playing O' equals: lines nextLine.
-	
+	self assertBoardWithLine1: ' |O|O' line2: ' |X| ' line3: 'X|O|X' state: 'Playing O'.
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:12:47'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:05:37'!
 test17BothPlayersSlideAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 2@1.
-	game putOAt: 3@2.
-	game putXAt: 2@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 3@2;
+		putXAt: 2@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@1) to: (3@1).
 	game slideOFrom: (1@2) to: (1@1).
 	
-	lines _  game view board.
+	lines _  view board.
 	
-	self assert: 'O| |O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' |X| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'X|O|X' equals: lines nextLine.
-	self assert: 'Playing X' equals: lines nextLine.
+	self assertBoardWithLine1: 'O| |O' line2: ' |X| ' line3: 'X|O|X' state: 'Playing X'.
 	
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:17:04'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:04:30'!
 test18PlayerXSlidesAndWinsAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 3@1.
-	game putOAt: 2@3.
-	game putXAt: 2@2.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 3@1;
+		putOAt: 2@3;
+		putXAt: 2@2;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@2) to: (3@2).
 	
-	lines _  game view board.
+	lines _  view board.
 	
-	self assert: ' |O|O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' | |O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'X|X|X' equals: lines nextLine.
-	self assert: 'X Won!!' equals: lines nextLine.
+	self assertBoardWithLine1: ' |O|O' line2: ' | |O' line3: 'X|X|X' state: 'X Won!!'.
 	
 	self assert: lines atEnd.! !
 
-!TerniLapilliConsoleViewTest methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:20:06'!
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'T 11/12/2018 12:02:22'!
 test19BothPlayersMakeWrongSlidesAndViewRefresh
 
-	| game lines |
-
 	game _ TerniLapilli new.
+	view _ TerniLapilliViewObserver on: game.
 	
-	game putXAt: 2@1.
-	game putOAt: 2@2.
-	game putXAt: 1@1.
-	game putOAt: 1@2.
-	game putXAt: 3@3.
-	game putOAt: 1@3.
+	game putXAt: 2@1;
+		putOAt: 2@2;
+		putXAt: 1@1;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
 	
 	game slideXFrom: (2@1) to: (3@1).
 	
@@ -503,16 +410,90 @@ test19BothPlayersMakeWrongSlidesAndViewRefresh
 		raise: self functionalException.
 	
 	
-	lines _  game view board.
+	lines _  view board.
 	
-	self assert: 'X|O| ' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: ' |O|O' equals: lines nextLine.
-	self assert: '-----' equals: lines nextLine.
-	self assert: 'X| |X' equals: lines nextLine.
-	self assert: 'Playing X' equals: lines nextLine.
+	self assertBoardWithLine1: 'X|O| ' line2: ' |O|O' line3: 'X| |X' state: 'Playing X'.
 	
 	self assert: lines atEnd.! !
+
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'TA 11/12/2018 14:40:05'!
+test20ConsoleCreatedAfterBothPlayersMarkAndSlideAndConsoleRegister
+
+	game _ TerniLapilli new.
+	
+	game putXAt: 2@1;
+		putOAt: 2@2;
+		putXAt: 2@3;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
+	
+	game slideXFrom: (2@1) to: (3@1).
+	game slideOFrom: (2@2) to: (3@2).
+	
+	console _ TerniLapilliConsoleObserver on: game.
+	lines _ console lines.
+	
+	self assert: lines atEnd.
+	
+	game slideXFrom: (3@1) to: (2@1).
+	
+	lines _ console lines.
+	self assert: 'X deslizó hasta 2@1 desde 3@1' equals: lines nextLine;
+		assert: 'Estado: Jugando O' equals: lines nextLine.
+	! !
+
+!TerniLapilliConsoleViewTest methodsFor: 'testing' stamp: 'TA 11/12/2018 14:43:55'!
+test21ViewCreatedAfterBothPlayersMarkAndSlideAndViewRefresh
+
+		game _ TerniLapilli new.
+	
+	
+	game putXAt: 2@1;
+		putOAt: 2@2;
+		putXAt: 1@1;
+		putOAt: 1@2;
+		putXAt: 3@3;
+		putOAt: 1@3.
+	
+	game slideXFrom: (2@1) to: (3@1).
+	game slideOFrom: (1@3) to: (2@3).
+	
+	view _ TerniLapilliViewObserver on: game.
+	
+	lines _  view board.
+	
+	self assertBoardWithLine1: ' | | ' line2: ' | | ' line3: ' | | ' state: ''.
+	self assert: lines atEnd.
+	
+	game slideXFrom: (3@1) to: (2@1).
+	game slideOFrom: (2@3) to: (1@3).
+	
+	lines _  view board.
+	
+	self assertBoardWithLine1: ' | |O' line2: 'X| | ' line3: ' | | ' state: 'Playing X'.
+	self assert: lines atEnd.! !
+
+
+!TerniLapilliConsoleViewTest methodsFor: 'assertions' stamp: 'T 11/12/2018 12:03:39'!
+assertBoardWithLine1: aLine1 line2: aLine2 line3: aLine3 state: aState
+
+	self assert: aLine1 equals: lines nextLine;
+		assert: '-----' equals: lines nextLine;
+		assert: aLine2 equals: lines nextLine;
+		assert: '-----' equals: lines nextLine;
+		assert: aLine3 equals: lines nextLine;
+		assert: aState equals: lines nextLine.! !
+
+
+!TerniLapilliConsoleViewTest methodsFor: 'auxiliars' stamp: 'TA 11/11/2018 19:22:19'!
+functionalException
+	^ Error - MessageNotUnderstood.! !
+
+!TerniLapilliConsoleViewTest methodsFor: 'auxiliars' stamp: 'A T G 11/8/2018 21:24:23'!
+in: aLines nextLines: aNumberLines
+
+	aNumberLines timesRepeat: [ aLines nextLine ].! !
 
 
 !classDefinition: #TerniLapilliTest category: #TerniLapilli!
@@ -1394,33 +1375,34 @@ Object subclass: #ActiveVariable
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!ActiveVariable methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:21:13'!
+!ActiveVariable methodsFor: 'initialization' stamp: 'TA 11/11/2018 20:31:39'!
+initializeFor: aGame
+
+	state := PlacingX new initializeFor: aGame.
+	observers := OrderedCollection new.! !
+
+
+!ActiveVariable methodsFor: 'control' stamp: 'TA 11/11/2018 21:21:13'!
 addObserver: anObserver
 
 	observers add: anObserver ! !
 
-!ActiveVariable methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 20:33:01'!
+!ActiveVariable methodsFor: 'control' stamp: 'TA 11/11/2018 20:33:01'!
 changeStateTo: aState
 
 	state := aState.
 	observers do: [ :anObserver | anObserver update: aState].
 ! !
 
-!ActiveVariable methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:52:39'!
+!ActiveVariable methodsFor: 'control' stamp: 'TA 11/11/2018 21:52:39'!
 doesNotUnderstand: aMessage
 
 	^aMessage sendTo: state! !
 
-!ActiveVariable methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 20:31:39'!
-initializeFor: aGame
-
-	state := PlacingX new initializeFor: aGame.
-	observers := OrderedCollection new.! !
-
 
 !classDefinition: #TerniLapilli category: #TerniLapilli!
 Object subclass: #TerniLapilli
-	instanceVariableNames: 'playerOPositions playerXPositions lastPlay activeVariableState view'
+	instanceVariableNames: 'playerOPositions playerXPositions lastPlay activeVariableState'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
@@ -1500,14 +1482,13 @@ hasWin: positions
 		or: [ self hasDownDiagonal: positions ]]].! !
 
 
-!TerniLapilli methodsFor: 'initialization' stamp: 'T 11/12/2018 10:20:41'!
+!TerniLapilli methodsFor: 'initialization' stamp: 'T 11/12/2018 11:38:20'!
 initialize
 
 	playerXPositions := OrderedCollection new.
 	playerOPositions := OrderedCollection new.
 	activeVariableState := ActiveVariable new initializeFor: self.
-	lastPlay := String new.
-	view := TerniLapilliViewObserver on: self.! !
+	lastPlay := String new.! !
 
 
 !TerniLapilli methodsFor: 'marking board' stamp: 'TA 11/11/2018 20:19:11'!
@@ -1523,15 +1504,13 @@ putXAt: aPosition
 	activeVariableState putXAt: aPosition! !
 
 
-!TerniLapilli methodsFor: 'marking board - private' stamp: 'TA 11/12/2018 01:03:00'!
+!TerniLapilli methodsFor: 'marking board - private' stamp: 'T 11/12/2018 11:40:02'!
 changeStateAfterAdding: aPosition to: positions  
  
 	|state|
 
 	positions add: aPosition.
 	state := TerniLapilliState for: self.
-	
-	view refreshState: state.
 	
 	activeVariableState changeStateTo: (state).
 	
@@ -1753,11 +1732,6 @@ lastPlay
 	
 	^lastPlay! !
 
-!TerniLapilli methodsFor: 'observers' stamp: 'TA 11/12/2018 00:15:56'!
-view
-	
-	^view.! !
-
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'TerniLapilli class' category: #TerniLapilli!
@@ -1824,206 +1798,17 @@ positionTakenErrorMessage
 	^'Position taken'! !
 
 
-!classDefinition: #TerniLapilliConsoleObserver category: #TerniLapilli!
-Object subclass: #TerniLapilliConsoleObserver
-	instanceVariableNames: 'game lines'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TerniLapilli'!
-
-!TerniLapilliConsoleObserver methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:49:47'!
-lines
-
-	^ReadStream on: lines contents.! !
-
-!TerniLapilliConsoleObserver methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:44:14'!
-observe: aGame
-
-	game := aGame.
-	lines := WriteStream on: String new.
-	aGame addStateObserver: self.
-	! !
-
-!TerniLapilliConsoleObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:15:04'!
-update: aState
-
-	lines nextPutAll: (TerniLapilliLastPlayAsStringVisitor for: game lastPlay) value; newLine.
-	lines nextPutAll: (TerniLapilliConsoleStateVisitor for: aState) value; newLine.! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'TerniLapilliConsoleObserver class' category: #TerniLapilli!
-TerniLapilliConsoleObserver class
-	instanceVariableNames: ''!
-
-!TerniLapilliConsoleObserver class methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 21:44:07'!
-on: aGame
-
-	^self new observe: aGame.! !
-
-
-!classDefinition: #TerniLapilliConsoleStateVisitor category: #TerniLapilli!
-Object subclass: #TerniLapilliConsoleStateVisitor
-	instanceVariableNames: 'state line'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TerniLapilli'!
-
-!TerniLapilliConsoleStateVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:27:04'!
-initializeWith: anState
-
-	state := anState.! !
-
-!TerniLapilliConsoleStateVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:30:19'!
-value
-
-	state accept: self.
-	^line.! !
-
-!TerniLapilliConsoleStateVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:29:43'!
-visitOWonState: anState.
-
-	line := 'Estado: Juego terminado - ¡Ganó O!!'.! !
-
-!TerniLapilliConsoleStateVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:29:59'!
-visitPlayingO: anState.
-	
-	line := 'Estado: Jugando O'! !
-
-!TerniLapilliConsoleStateVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:30:03'!
-visitPlayingX: anState.
-
-	line := 'Estado: Jugando X'.! !
-
-!TerniLapilliConsoleStateVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:30:06'!
-visitXWonState: anState.
-
-	line := 'Estado: Juego terminado - ¡Ganó X!!'
-	! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'TerniLapilliConsoleStateVisitor class' category: #TerniLapilli!
-TerniLapilliConsoleStateVisitor class
-	instanceVariableNames: ''!
-
-!TerniLapilliConsoleStateVisitor class methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:20:16'!
-for: anState
-
-	^ self new initializeWith: anState.! !
-
-
-!classDefinition: #TerniLapilliLastPlayAsStringVisitor category: #TerniLapilli!
-Object subclass: #TerniLapilliLastPlayAsStringVisitor
-	instanceVariableNames: 'lastPlay line'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TerniLapilli'!
-
-!TerniLapilliLastPlayAsStringVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:41:25'!
-initializeWith: aLastPlay
-
-	lastPlay  := aLastPlay.
-	! !
-
-!TerniLapilliLastPlayAsStringVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:33:42'!
-value
-
-	lastPlay accept: self.
-	
-	^line.! !
-
-!TerniLapilliLastPlayAsStringVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:54:44'!
-visitPlacingO: aLastPlay
-
-	line := 'O marco en ', (aLastPlay position asString).! !
-
-!TerniLapilliLastPlayAsStringVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:54:36'!
-visitPlacingX: aLastPlay
-
-	line := 'X marco en ', (aLastPlay position asString).! !
-
-!TerniLapilliLastPlayAsStringVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:54:52'!
-visitSlidingO: aLastPlay
-
-	line := 'O deslizó hasta ', (aLastPlay positionTo asString), ' desde ', (aLastPlay positionFrom asString).! !
-
-!TerniLapilliLastPlayAsStringVisitor methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:55:19'!
-visitSlidingX: aLastPlay
-
-	line := 'X deslizó hasta ', (aLastPlay positionTo asString), ' desde ', (aLastPlay positionFrom asString).! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'TerniLapilliLastPlayAsStringVisitor class' category: #TerniLapilli!
-TerniLapilliLastPlayAsStringVisitor class
-	instanceVariableNames: ''!
-
-!TerniLapilliLastPlayAsStringVisitor class methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:41:03'!
-for: aLastPlay
-
-	^TerniLapilliLastPlayAsStringVisitor new initializeWith: aLastPlay.! !
-
-
-!classDefinition: #TerniLapilliLastPlayRefreshViewVisitor category: #TerniLapilli!
-Object subclass: #TerniLapilliLastPlayRefreshViewVisitor
-	instanceVariableNames: 'lastPlay line view'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TerniLapilli'!
-
-!TerniLapilliLastPlayRefreshViewVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:29:33'!
-initializeWith: aLastPlay and: aView.
-
-	lastPlay := aLastPlay.
-	view := aView.! !
-
-!TerniLapilliLastPlayRefreshViewVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:32:25'!
-value
-
-	lastPlay accept: self.
-! !
-
-!TerniLapilliLastPlayRefreshViewVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:31:19'!
-visitPlacingO: aLastPlay
-
-	view putOIn: aLastPlay position! !
-
-!TerniLapilliLastPlayRefreshViewVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 10:31:34'!
-visitPlacingX: aLastPlay
-
-	view putXIn: aLastPlay position! !
-
-!TerniLapilliLastPlayRefreshViewVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:31:58'!
-visitSlidingO: aLastPlay
-
-	view clear: aLastPlay positionFrom.
-	view putOIn: aLastPlay positionTo.! !
-
-!TerniLapilliLastPlayRefreshViewVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:32:08'!
-visitSlidingX: aLastPlay
-
-	view clear: aLastPlay positionFrom.
-	view putXIn: aLastPlay positionTo.! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'TerniLapilliLastPlayRefreshViewVisitor class' category: #TerniLapilli!
-TerniLapilliLastPlayRefreshViewVisitor class
-	instanceVariableNames: ''!
-
-!TerniLapilliLastPlayRefreshViewVisitor class methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:29:04'!
-for: aLastPlay and: aView
-
-	^ self new initializeWith: aLastPlay and: aView.! !
-
-
 !classDefinition: #TerniLapilliMove category: #TerniLapilli!
 Object subclass: #TerniLapilliMove
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
+
+!TerniLapilliMove methodsFor: 'visitor' stamp: 'T 11/12/2018 12:16:19'!
+accept: aVisitor
+
+	self subclassResponsibility! !
 
 
 !classDefinition: #PlayingOMove category: #TerniLapilli!
@@ -2041,17 +1826,19 @@ PlayingOMove subclass: #PlacingOMove
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!PlacingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:42:54'!
+!PlacingOMove methodsFor: 'visitor' stamp: 'TA 11/12/2018 01:42:54'!
 accept: aVisitor
 
 	aVisitor visitPlacingO: self.! !
 
-!PlacingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:36:26'!
+
+!PlacingOMove methodsFor: 'initialization' stamp: 'TA 11/12/2018 01:36:26'!
 initializeWith: aPosition
 
 	position := aPosition ! !
 
-!PlacingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:53:31'!
+
+!PlacingOMove methodsFor: 'positions' stamp: 'TA 11/12/2018 01:53:31'!
 position
 
 	^position! !
@@ -2062,7 +1849,7 @@ position
 PlacingOMove class
 	instanceVariableNames: ''!
 
-!PlacingOMove class methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:36:37'!
+!PlacingOMove class methodsFor: 'instance creation' stamp: 'TA 11/12/2018 01:36:37'!
 for: aPosition
 
 	^self new initializeWith: aPosition.! !
@@ -2075,26 +1862,28 @@ PlayingOMove subclass: #SlidingOMove
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!SlidingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:43:10'!
-accept: aVisitor
-
-	aVisitor visitSlidingO: self.! !
-
-!SlidingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:57:22'!
-initializeWith: aPosition and: anotherPosition
-
-	positionTo := anotherPosition.
-	positionFrom := aPosition ! !
-
-!SlidingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:54:11'!
+!SlidingOMove methodsFor: 'positions' stamp: 'TA 11/12/2018 01:54:11'!
 positionFrom
 
 	^positionFrom.! !
 
-!SlidingOMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:54:18'!
+!SlidingOMove methodsFor: 'positions' stamp: 'TA 11/12/2018 01:54:18'!
 positionTo
 
 	^positionTo.! !
+
+
+!SlidingOMove methodsFor: 'visitor' stamp: 'TA 11/12/2018 01:43:10'!
+accept: aVisitor
+
+	aVisitor visitSlidingO: self.! !
+
+
+!SlidingOMove methodsFor: 'initialization' stamp: 'TA 11/12/2018 01:57:22'!
+initializeWith: aPosition and: anotherPosition
+
+	positionTo := anotherPosition.
+	positionFrom := aPosition ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -2102,7 +1891,7 @@ positionTo
 SlidingOMove class
 	instanceVariableNames: ''!
 
-!SlidingOMove class methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:57:07'!
+!SlidingOMove class methodsFor: 'instance creation' stamp: 'TA 11/12/2018 01:57:07'!
 from: aPosition to: anotherPosition
 	
 	^self new initializeWith: aPosition and: anotherPosition.! !
@@ -2123,17 +1912,19 @@ PlayingXMove subclass: #PlacingXMove
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!PlacingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:43:32'!
+!PlacingXMove methodsFor: 'visitor' stamp: 'TA 11/12/2018 01:43:32'!
 accept: aVisitor
 
 	aVisitor visitPlacingX: self.! !
 
-!PlacingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:36:19'!
+
+!PlacingXMove methodsFor: 'initialization' stamp: 'TA 11/12/2018 01:36:19'!
 initializeWith: aPosition
 
 	position := aPosition ! !
 
-!PlacingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:53:37'!
+
+!PlacingXMove methodsFor: 'positions' stamp: 'TA 11/12/2018 01:53:37'!
 position
 
 	^position! !
@@ -2144,7 +1935,7 @@ position
 PlacingXMove class
 	instanceVariableNames: ''!
 
-!PlacingXMove class methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:35:56'!
+!PlacingXMove class methodsFor: 'instance creation' stamp: 'TA 11/12/2018 01:35:56'!
 for: aPosition
 
 	^self new initializeWith: aPosition.! !
@@ -2157,23 +1948,25 @@ PlayingXMove subclass: #SlidingXMove
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!SlidingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:43:44'!
+!SlidingXMove methodsFor: 'visitor' stamp: 'TA 11/12/2018 01:43:44'!
 accept: aVisitor
 
 	aVisitor visitSlidingX: self.! !
 
-!SlidingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:57:42'!
+
+!SlidingXMove methodsFor: 'initialization' stamp: 'TA 11/12/2018 01:57:42'!
 initializeWith: aPosition and: anotherPosition
 
 	positionTo := anotherPosition.
 	positionFrom := aPosition ! !
 
-!SlidingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:54:04'!
+
+!SlidingXMove methodsFor: 'positions' stamp: 'TA 11/12/2018 01:54:04'!
 positionFrom
 
 	^positionFrom.! !
 
-!SlidingXMove methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:53:52'!
+!SlidingXMove methodsFor: 'positions' stamp: 'TA 11/12/2018 01:53:52'!
 positionTo
 
 	^positionTo! !
@@ -2184,10 +1977,162 @@ positionTo
 SlidingXMove class
 	instanceVariableNames: ''!
 
-!SlidingXMove class methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 01:57:31'!
+!SlidingXMove class methodsFor: 'instance creation' stamp: 'TA 11/12/2018 01:57:31'!
 from: aPosition to: anotherPosition
 	
 	^self new initializeWith: aPosition and: anotherPosition.! !
+
+
+!classDefinition: #TerniLapilliObserver category: #TerniLapilli!
+Object subclass: #TerniLapilliObserver
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
+
+!TerniLapilliObserver methodsFor: 'actualization' stamp: 'T 11/12/2018 11:52:04'!
+update: aState
+
+	self subclassResponsibility ! !
+
+
+!TerniLapilliObserver methodsFor: 'initialization' stamp: 'T 11/12/2018 11:52:29'!
+observe: aGame
+
+	self subclassResponsibility ! !
+
+
+!classDefinition: #TerniLapilliConsoleObserver category: #TerniLapilli!
+TerniLapilliObserver subclass: #TerniLapilliConsoleObserver
+	instanceVariableNames: 'game lines'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
+
+!TerniLapilliConsoleObserver methodsFor: 'viewing' stamp: 'TA 11/11/2018 21:49:47'!
+lines
+
+	^ReadStream on: lines contents.! !
+
+
+!TerniLapilliConsoleObserver methodsFor: 'initialization' stamp: 'TA 11/11/2018 21:44:14'!
+observe: aGame
+
+	game := aGame.
+	lines := WriteStream on: String new.
+	aGame addStateObserver: self.
+	! !
+
+
+!TerniLapilliConsoleObserver methodsFor: 'actualization' stamp: 'T 11/12/2018 11:29:03'!
+update: aState
+
+	lines nextPutAll: (TerniLapilliMoveAsStringVisitor for: game lastPlay) value; newLine.
+	lines nextPutAll: (TerniLapilliConsoleStateVisitor for: aState) value; newLine.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TerniLapilliConsoleObserver class' category: #TerniLapilli!
+TerniLapilliConsoleObserver class
+	instanceVariableNames: ''!
+
+!TerniLapilliConsoleObserver class methodsFor: 'instance creation' stamp: 'TA 11/11/2018 21:44:07'!
+on: aGame
+
+	^self new observe: aGame.! !
+
+
+!classDefinition: #TerniLapilliViewObserver category: #TerniLapilli!
+TerniLapilliObserver subclass: #TerniLapilliViewObserver
+	instanceVariableNames: 'lines game stateLine'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
+
+!TerniLapilliViewObserver methodsFor: 'modifiers' stamp: 'T 11/12/2018 11:25:34'!
+clear: aPosition 
+
+	| line |
+
+	line _	lines at: aPosition x.
+	line at: aPosition y put: $ .! !
+
+!TerniLapilliViewObserver methodsFor: 'modifiers' stamp: 'T 11/12/2018 11:25:49'!
+putOIn: aPosition 
+
+	| line |
+	
+	line _ lines at: aPosition x.
+	line at: aPosition y put: $O.! !
+
+!TerniLapilliViewObserver methodsFor: 'modifiers' stamp: 'T 11/12/2018 11:25:01'!
+putXIn: aPosition 
+
+	| line |
+	
+	line _ lines at: aPosition x.
+	line at: aPosition y put: $X.! !
+
+
+!TerniLapilliViewObserver methodsFor: 'initialization' stamp: 'TA 11/12/2018 14:46:20'!
+observe: aGame
+
+	game := aGame.
+	lines := OrderedCollection new.
+	3 timesRepeat: [ lines add: (OrderedCollection with: $ with: $ with: $ ). ].
+	aGame addStateObserver: self.
+	
+	stateLine := ''.
+	
+	! !
+
+
+!TerniLapilliViewObserver methodsFor: 'actualization' stamp: 'T 11/12/2018 11:29:29'!
+update: aState
+
+	stateLine := (TerniLapilliViewStateVisitor for: aState) value.
+	(TerniLapilliMoveRefreshViewVisitor for: game lastPlay and: self) value.
+! !
+
+
+!TerniLapilliViewObserver methodsFor: 'viewing' stamp: 'T 11/12/2018 11:12:18'!
+board
+
+	| content |
+
+	content := String streamContents: [ :stream |
+		self printOneLine: (lines at: 1) in: stream.
+		self printSeparatorIn: stream.
+		self printOneLine: (lines at: 2) in: stream.
+		self printSeparatorIn: stream.
+		self printOneLine: (lines at: 3) in: stream.
+		
+		stream nextPutAll: stateLine; newLine.
+		].
+	
+	^ReadStream on: content.! !
+
+
+!TerniLapilliViewObserver methodsFor: 'auxiliar' stamp: 'T 11/12/2018 11:10:20'!
+printOneLine: aLine in: aStream
+	
+	aStream nextPutAll: (aLine at: 1) asString , '|', (aLine at: 2) asString, '|', (aLine at: 3) asString; newLine.! !
+
+!TerniLapilliViewObserver methodsFor: 'auxiliar' stamp: 'T 11/12/2018 11:10:42'!
+printSeparatorIn: aStream
+	
+	aStream nextPutAll: '-----'; newLine.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TerniLapilliViewObserver class' category: #TerniLapilli!
+TerniLapilliViewObserver class
+	instanceVariableNames: ''!
+
+!TerniLapilliViewObserver class methodsFor: 'instance creation' stamp: 'TA 11/11/2018 23:50:04'!
+on: aGame
+
+	^self new observe: aGame.! !
 
 
 !classDefinition: #TerniLapilliState category: #TerniLapilli!
@@ -2325,7 +2270,7 @@ GameOverState subclass: #OWonState
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!OWonState methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:13:48'!
+!OWonState methodsFor: 'visitor' stamp: 'TA 11/11/2018 23:13:48'!
 accept: aVisitor
 
 	aVisitor visitOWonState: self.! !
@@ -2336,7 +2281,7 @@ accept: aVisitor
 OWonState class
 	instanceVariableNames: ''!
 
-!OWonState class methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:12:37'!
+!OWonState class methodsFor: 'state selection' stamp: 'TA 11/11/2018 23:12:37'!
 isFor: aTerniLapilli
 
 
@@ -2350,7 +2295,7 @@ GameOverState subclass: #XWonState
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!XWonState methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:13:59'!
+!XWonState methodsFor: 'visitor' stamp: 'TA 11/11/2018 23:13:59'!
 accept: aVisitor
 
 	aVisitor visitXWonState: self.! !
@@ -2361,7 +2306,7 @@ accept: aVisitor
 XWonState class
 	instanceVariableNames: ''!
 
-!XWonState class methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:13:11'!
+!XWonState class methodsFor: 'state selection' stamp: 'TA 11/11/2018 23:13:11'!
 isFor: aTerniLapilli
 
 	^aTerniLapilli hasPlayerXWon.! !
@@ -2380,15 +2325,16 @@ isPlayingO
 	^true! !
 
 
-!PlayingO methodsFor: 'sliding' stamp: 'TA 11/11/2018 22:58:06'!
-accept: aVisitor
-
-	aVisitor visitPlayingO: self.! !
-
 !PlayingO methodsFor: 'sliding' stamp: 'HAW 11/8/2018 11:48:20'!
 slideXFrom: aPosition to: anotherPostion
 
 	game slideXWhenPlayingOFrom: aPosition to: anotherPostion .! !
+
+
+!PlayingO methodsFor: 'visitor' stamp: 'TA 11/11/2018 22:58:06'!
+accept: aVisitor
+
+	aVisitor visitPlayingO: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -2485,15 +2431,16 @@ isPlayingX
 	^true! !
 
 
-!PlayingX methodsFor: 'sliding' stamp: 'TA 11/11/2018 22:57:41'!
-accept: aVisitor
-
-	aVisitor visitPlayingX: self.! !
-
 !PlayingX methodsFor: 'sliding' stamp: 'HAW 11/8/2018 11:48:38'!
 slideOFrom: aPosition to: anotherPostion
  
 	game slideOWhenPlayingXFrom: aPosition to: anotherPostion .! !
+
+
+!PlayingX methodsFor: 'visitor' stamp: 'TA 11/11/2018 22:57:41'!
+accept: aVisitor
+
+	aVisitor visitPlayingX: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -2589,136 +2536,286 @@ isFor: aTerniLapilli
 	^aTerniLapilli isPlayingO and: [ aTerniLapilli hasXMorePiecesToPlace not and: [ aTerniLapilli hasPlayerOWon not ]]! !
 
 
-!classDefinition: #TerniLapilliViewObserver category: #TerniLapilli!
-Object subclass: #TerniLapilliViewObserver
-	instanceVariableNames: 'lines game stateLine'
+!classDefinition: #TerniLapilliVisitor category: #TerniLapilli!
+Object subclass: #TerniLapilliVisitor
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:12:18'!
-board
+
+!classDefinition: #TerniLapilliMoveVisitor category: #TerniLapilli!
+TerniLapilliVisitor subclass: #TerniLapilliMoveVisitor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
 
-	| content |
+!TerniLapilliMoveVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:29:40'!
+visitPlacingO: aLastPlay
 
-	content := String streamContents: [ :stream |
-		self printOneLine: (lines at: 1) in: stream.
-		self printSeparatorIn: stream.
-		self printOneLine: (lines at: 2) in: stream.
-		self printSeparatorIn: stream.
-		self printOneLine: (lines at: 3) in: stream.
-		
-		stream nextPutAll: stateLine; newLine.
-		].
+	self subclassResponsibility.! !
+
+!TerniLapilliMoveVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:29:45'!
+visitPlacingX: aLastPlay
+
+	self subclassResponsibility.! !
+
+!TerniLapilliMoveVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:29:51'!
+visitSlidingO: aLastPlay
+
+	self subclassResponsibility.! !
+
+!TerniLapilliMoveVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:29:52'!
+visitSlidingX: aLastPlay
+
+	self subclassResponsibility.! !
+
+
+!TerniLapilliMoveVisitor methodsFor: 'evaluating' stamp: 'TA 11/12/2018 14:29:24'!
+value
 	
-	^ReadStream on: content.! !
+	self subclassResponsibility.! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:25:34'!
-clear: aPosition 
+
+!classDefinition: #TerniLapilliMoveAsStringVisitor category: #TerniLapilli!
+TerniLapilliMoveVisitor subclass: #TerniLapilliMoveAsStringVisitor
+	instanceVariableNames: 'line move'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
 
-	| line |
+!TerniLapilliMoveAsStringVisitor methodsFor: 'initialization' stamp: 'T 11/12/2018 11:33:24'!
+initializeWith: aLastPlay
 
-	line _	lines at: aPosition x.
-	line at: aPosition y put: $ .! !
-
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:03:11'!
-observe: aGame
-
-	game := aGame.
-	lines := OrderedCollection new.
-	3 timesRepeat: [ lines add: (OrderedCollection with: $ with: $ with: $ ). ].
-	aGame addStateObserver: self.
-	
-	stateLine :='Playing X'.
-	
+	move  := aLastPlay.
 	! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:10:20'!
-printOneLine: aLine in: aStream
+
+!TerniLapilliMoveAsStringVisitor methodsFor: 'evaluating' stamp: 'T 11/12/2018 11:33:24'!
+value
+
+	move accept: self.
 	
-	aStream nextPutAll: (aLine at: 1) asString , '|', (aLine at: 2) asString, '|', (aLine at: 3) asString; newLine.! !
+	^line.! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:10:42'!
-printSeparatorIn: aStream
-	
-	aStream nextPutAll: '-----'; newLine.! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:25:49'!
-putOIn: aPosition 
+!TerniLapilliMoveAsStringVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 01:54:44'!
+visitPlacingO: aLastPlay
 
-	| line |
-	
-	line _ lines at: aPosition x.
-	line at: aPosition y put: $O.! !
+	line := 'O marco en ', (aLastPlay position asString).! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:25:01'!
-putXIn: aPosition 
+!TerniLapilliMoveAsStringVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 01:54:36'!
+visitPlacingX: aLastPlay
 
-	| line |
-	
-	line _ lines at: aPosition x.
-	line at: aPosition y put: $X.! !
+	line := 'X marco en ', (aLastPlay position asString).! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 09:34:33'!
-refreshState: anState
+!TerniLapilliMoveAsStringVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 01:54:52'!
+visitSlidingO: aLastPlay
 
-	(anState isKindOf: OWonState) ifTrue: [stateLine := 'O Won!!'].
-	(anState isKindOf: XWonState) ifTrue: [stateLine := 'X Won!!'].
-	! !
+	line := 'O deslizó hasta ', (aLastPlay positionTo asString), ' desde ', (aLastPlay positionFrom asString).! !
 
-!TerniLapilliViewObserver methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:14:50'!
-update: aState
+!TerniLapilliMoveAsStringVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 01:55:19'!
+visitSlidingX: aLastPlay
 
-	stateLine := (TerniLapilliViewStateVisitor for: aState) value.
-	(TerniLapilliLastPlayRefreshViewVisitor for: game lastPlay and: self) value.
-! !
+	line := 'X deslizó hasta ', (aLastPlay positionTo asString), ' desde ', (aLastPlay positionFrom asString).! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TerniLapilliViewObserver class' category: #TerniLapilli!
-TerniLapilliViewObserver class
+!classDefinition: 'TerniLapilliMoveAsStringVisitor class' category: #TerniLapilli!
+TerniLapilliMoveAsStringVisitor class
 	instanceVariableNames: ''!
 
-!TerniLapilliViewObserver class methodsFor: 'as yet unclassified' stamp: 'TA 11/11/2018 23:50:04'!
-on: aGame
+!TerniLapilliMoveAsStringVisitor class methodsFor: 'instance creation' stamp: 'T 11/12/2018 11:29:03'!
+for: aLastPlay
 
-	^self new observe: aGame.! !
+	^TerniLapilliMoveAsStringVisitor new initializeWith: aLastPlay.! !
 
 
-!classDefinition: #TerniLapilliViewStateVisitor category: #TerniLapilli!
-Object subclass: #TerniLapilliViewStateVisitor
+!classDefinition: #TerniLapilliMoveRefreshViewVisitor category: #TerniLapilli!
+TerniLapilliMoveVisitor subclass: #TerniLapilliMoveRefreshViewVisitor
+	instanceVariableNames: 'line view move'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
+
+!TerniLapilliMoveRefreshViewVisitor methodsFor: 'initialization' stamp: 'T 11/12/2018 11:33:39'!
+initializeWith: aLastPlay and: aView.
+
+	move := aLastPlay.
+	view := aView.! !
+
+
+!TerniLapilliMoveRefreshViewVisitor methodsFor: 'evaluating' stamp: 'T 11/12/2018 11:33:39'!
+value
+
+	move accept: self.
+! !
+
+
+!TerniLapilliMoveRefreshViewVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 09:31:19'!
+visitPlacingO: aLastPlay
+
+	view putOIn: aLastPlay position! !
+
+!TerniLapilliMoveRefreshViewVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 10:31:34'!
+visitPlacingX: aLastPlay
+
+	view putXIn: aLastPlay position! !
+
+!TerniLapilliMoveRefreshViewVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 09:31:58'!
+visitSlidingO: aLastPlay
+
+	view clear: aLastPlay positionFrom.
+	view putOIn: aLastPlay positionTo.! !
+
+!TerniLapilliMoveRefreshViewVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 09:32:08'!
+visitSlidingX: aLastPlay
+
+	view clear: aLastPlay positionFrom.
+	view putXIn: aLastPlay positionTo.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TerniLapilliMoveRefreshViewVisitor class' category: #TerniLapilli!
+TerniLapilliMoveRefreshViewVisitor class
+	instanceVariableNames: ''!
+
+!TerniLapilliMoveRefreshViewVisitor class methodsFor: 'instance creation' stamp: 'T 11/12/2018 09:29:04'!
+for: aLastPlay and: aView
+
+	^ self new initializeWith: aLastPlay and: aView.! !
+
+
+!classDefinition: #TerniLapilliStateVisitor category: #TerniLapilli!
+TerniLapilliVisitor subclass: #TerniLapilliStateVisitor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
+
+!TerniLapilliStateVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:31:58'!
+visitOWonState: anState.
+
+	self subclassResponsibility ! !
+
+!TerniLapilliStateVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:32:07'!
+visitPlayingO: anState.
+
+	self subclassResponsibility ! !
+
+!TerniLapilliStateVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:32:08'!
+visitPlayingX: anState.
+
+	self subclassResponsibility ! !
+
+!TerniLapilliStateVisitor methodsFor: 'visiting' stamp: 'TA 11/12/2018 14:32:02'!
+visitXWonState: anState.
+
+	self subclassResponsibility ! !
+
+
+!TerniLapilliStateVisitor methodsFor: 'initialization' stamp: 'TA 11/12/2018 14:31:36'!
+initializeWith: anState
+
+	self subclassResponsibility ! !
+
+
+!TerniLapilliStateVisitor methodsFor: 'evaluating' stamp: 'TA 11/12/2018 14:31:47'!
+value
+
+	self subclassResponsibility ! !
+
+
+!classDefinition: #TerniLapilliConsoleStateVisitor category: #TerniLapilli!
+TerniLapilliStateVisitor subclass: #TerniLapilliConsoleStateVisitor
 	instanceVariableNames: 'state line'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!TerniLapilliViewStateVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:16:14'!
+!TerniLapilliConsoleStateVisitor methodsFor: 'initialization' stamp: 'TA 11/11/2018 23:27:04'!
 initializeWith: anState
 
 	state := anState.! !
 
-!TerniLapilliViewStateVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:16:19'!
+
+!TerniLapilliConsoleStateVisitor methodsFor: 'evaluating' stamp: 'TA 11/11/2018 23:30:19'!
 value
 
 	state accept: self.
 	^line.! !
 
-!TerniLapilliViewStateVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:17:55'!
+
+!TerniLapilliConsoleStateVisitor methodsFor: 'visiting' stamp: 'TA 11/11/2018 23:29:43'!
+visitOWonState: anState.
+
+	line := 'Estado: Juego terminado - ¡Ganó O!!'.! !
+
+!TerniLapilliConsoleStateVisitor methodsFor: 'visiting' stamp: 'TA 11/11/2018 23:29:59'!
+visitPlayingO: anState.
+	
+	line := 'Estado: Jugando O'! !
+
+!TerniLapilliConsoleStateVisitor methodsFor: 'visiting' stamp: 'TA 11/11/2018 23:30:03'!
+visitPlayingX: anState.
+
+	line := 'Estado: Jugando X'.! !
+
+!TerniLapilliConsoleStateVisitor methodsFor: 'visiting' stamp: 'TA 11/11/2018 23:30:06'!
+visitXWonState: anState.
+
+	line := 'Estado: Juego terminado - ¡Ganó X!!'
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TerniLapilliConsoleStateVisitor class' category: #TerniLapilli!
+TerniLapilliConsoleStateVisitor class
+	instanceVariableNames: ''!
+
+!TerniLapilliConsoleStateVisitor class methodsFor: 'instance creation' stamp: 'T 11/12/2018 11:20:16'!
+for: anState
+
+	^ self new initializeWith: anState.! !
+
+
+!classDefinition: #TerniLapilliViewStateVisitor category: #TerniLapilli!
+TerniLapilliStateVisitor subclass: #TerniLapilliViewStateVisitor
+	instanceVariableNames: 'state line'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TerniLapilli'!
+
+!TerniLapilliViewStateVisitor methodsFor: 'initialization' stamp: 'T 11/12/2018 11:16:14'!
+initializeWith: anState
+
+	state := anState.! !
+
+
+!TerniLapilliViewStateVisitor methodsFor: 'evaluating' stamp: 'T 11/12/2018 11:16:19'!
+value
+
+	state accept: self.
+	^line.! !
+
+
+!TerniLapilliViewStateVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 11:17:55'!
 visitOWonState: anState.
 
 	line := 'O Won!!'.! !
 
-!TerniLapilliViewStateVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:18:03'!
+!TerniLapilliViewStateVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 11:18:03'!
 visitPlayingO: anState.
 	
 	line := 'Playing O'! !
 
-!TerniLapilliViewStateVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:18:16'!
+!TerniLapilliViewStateVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 11:18:16'!
 visitPlayingX: anState.
 
 	line := 'Playing X'.! !
 
-!TerniLapilliViewStateVisitor methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:17:45'!
+!TerniLapilliViewStateVisitor methodsFor: 'visiting' stamp: 'T 11/12/2018 11:17:45'!
 visitXWonState: anState.
 
 	line := 'X Won!!'
@@ -2730,7 +2827,7 @@ visitXWonState: anState.
 TerniLapilliViewStateVisitor class
 	instanceVariableNames: ''!
 
-!TerniLapilliViewStateVisitor class methodsFor: 'as yet unclassified' stamp: 'T 11/12/2018 11:20:23'!
+!TerniLapilliViewStateVisitor class methodsFor: 'instance creation' stamp: 'T 11/12/2018 11:20:23'!
 for: anState
 
 	^ self new initializeWith: anState.! !
