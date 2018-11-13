@@ -26,8 +26,8 @@ test02AddABookToCartAndCheckItsInTheCart
 	self assert: (carrito listCart at: 1) equals: 'unLibro'.
 	! !
 
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:51:19'!
-test03AddABooksToCartAndCheckTheirQuantitys
+!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:14:30'!
+test03AddABooksToCartAndCheckTheirQuantities
 
 	|carrito|
 	
@@ -41,8 +41,28 @@ test03AddABooksToCartAndCheckTheirQuantitys
 	self assert: (carrito quantityOf: 'libro1') equals: 2.
 	self assert: (carrito quantityOf: 'libro2') equals: 3.! !
 
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:05:10'!
-test4ChequearErroresHacerCatalogotestear
+!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:20:15'!
+test04YouCantAddAbookThatsNotInTheCatalog
+	|carrito|
+	
+	carrito := Cart new.
+	carrito addToCart: 'libro1' withQuantity: 2.
+	
+	self assert: carrito isEmpty not.
+	self assert: (carrito listCart at: 1) equals: 'libro1'.
+	self assert: (carrito quantityOf: 'libro1') equals: 2.
+	
+	self
+		should: [carrito addToCart: 'libroExterno' withQuantity: 1]
+		raise: self error
+		withExceptionDo: [ :anError |
+			self
+				assert: Cart invalidBookErrorMessage
+				equals: anError messageText.
+			self assert: (carrito quantityOf: 'libroExterno') equals: 0.]	! !
+
+!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:13:45'!
+test05ChequearErroresHacerCatalogotestear
 
 	|carrito|
 	
