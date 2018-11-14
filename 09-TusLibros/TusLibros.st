@@ -1,113 +1,134 @@
 !classDefinition: #TusLibrosTests category: #TusLibros!
 TestCase subclass: #TusLibrosTests
-	instanceVariableNames: ''
+	instanceVariableNames: 'catalog carrito'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:13:03'!
+!TusLibrosTests methodsFor: 'tests' stamp: 'T 11/14/2018 12:57:49'!
 test01CreateNewCartAndItsEmpty
-
-	|carrito|
 	
 	carrito := Cart new.
 	
 	self assert: carrito isEmpty.! !
 
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:48:42'!
+!TusLibrosTests methodsFor: 'tests' stamp: 'T 11/14/2018 12:59:12'!
 test02AddABookToCartAndCheckItsInTheCart
 
-	|carrito|
+	catalog := OrderedCollection with: 'libro1' with: 'libro2'.
 	
-	carrito := Cart new.
-	carrito addToCart: 'unLibro' withQuantity: 2.
+	carrito := Cart withCatalog: catalog.
 	
-	self assert: carrito isEmpty not.
-	self assert: (carrito listCart at: 1) equals: 'unLibro'.
-	! !
+	carrito addToCart: 'libro1' withQuantity: 1.
+	
+	self assert: carrito isEmpty not;
+		assert: carrito listCart size equals: 1;
+	
+		assert: (carrito listCart at: 1) equals: 'libro1'.! !
 
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:14:30'!
-test03AddABooksToCartAndCheckTheirQuantities
+!TusLibrosTests methodsFor: 'tests' stamp: 'T 11/14/2018 12:59:07'!
+test03AddBooksToCartAndCheckTheyAreInTheCart
 
-	|carrito|
+	catalog := OrderedCollection with: 'libro1' with: 'libro2'.
 	
-	carrito := Cart new.
+	carrito := Cart withCatalog: catalog.
+	
+	carrito addToCart: 'libro1' withQuantity: 1.
+	carrito addToCart: 'libro2' withQuantity: 1.
+
+	self assert: carrito isEmpty not;
+		assert: carrito listCart size equals: 2;
+	
+		assert: (carrito listCart at: 1) equals: 'libro1';
+		assert: (carrito listCart at: 2) equals: 'libro2'.! !
+
+!TusLibrosTests methodsFor: 'tests' stamp: 'T 11/14/2018 12:59:19'!
+test04AddBooksToCartAndCheckTheirQuantities
+
+	catalog := OrderedCollection with: 'libro1' with: 'libro2'.
+	
+	carrito := Cart withCatalog: catalog.
+	
 	carrito addToCart: 'libro1' withQuantity: 2.
 	carrito addToCart: 'libro2' withQuantity: 3.
 	
-	self assert: carrito isEmpty not.
-	self assert: (carrito listCart at: 1) equals: 'libro1'.
-	self assert: (carrito listCart at: 4) equals: 'libro2'.
-	self assert: (carrito quantityOf: 'libro1') equals: 2.
-	self assert: (carrito quantityOf: 'libro2') equals: 3.! !
+	self assert: carrito isEmpty not;
+		assert: carrito listCart size equals: 5;
+	
+		assert: (carrito listCart at: 1) equals: 'libro1';
+		assert: (carrito listCart at: 2) equals: 'libro1';
+		assert: (carrito listCart at: 3) equals: 'libro2';
+		assert: (carrito listCart at: 4) equals: 'libro2';
+		assert: (carrito listCart at: 5) equals: 'libro2';
+		assert: (carrito quantityOf: 'libro1') equals: 2;
+		assert: (carrito quantityOf: 'libro2') equals: 3.! !
 
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:20:15'!
-test04YouCantAddAbookThatsNotInTheCatalog
-	|carrito|
-	
-	carrito := Cart new.
+!TusLibrosTests methodsFor: 'tests' stamp: 'T 11/14/2018 12:59:33'!
+test05YouCantAddAbookThatsNotInTheCatalog
+
+	catalog := OrderedCollection with: 'libro1' with: 'libro2'.
+
+	carrito := Cart withCatalog: catalog.
 	carrito addToCart: 'libro1' withQuantity: 2.
-	
-	self assert: carrito isEmpty not.
-	self assert: (carrito listCart at: 1) equals: 'libro1'.
-	self assert: (carrito quantityOf: 'libro1') equals: 2.
-	
+
+	self assert: carrito isEmpty not;
+		assert: (carrito listCart at: 1) equals: 'libro1';
+		assert: (carrito listCart at: 2) equals: 'libro1';
+		assert: (carrito quantityOf: 'libro1') equals: 2.
+
 	self
 		should: [carrito addToCart: 'libroExterno' withQuantity: 1]
-		raise: self error
+		raise: Error
 		withExceptionDo: [ :anError |
 			self
 				assert: Cart invalidBookErrorMessage
 				equals: anError messageText.
-			self assert: (carrito quantityOf: 'libroExterno') equals: 0.]	! !
-
-!TusLibrosTests methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 21:13:45'!
-test05ChequearErroresHacerCatalogotestear
-
-	|carrito|
-	
-	carrito := Cart new.
-	carrito addToCart: 'libro1' withQuantity: 2.
-	carrito addToCart: 'libro2' withQuantity: 3.
-	
-	self assert: carrito isEmpty not.
-	self assert: (carrito listCart at: 1) equals: 'libro1'.
-	self assert: (carrito listCart at: 4) equals: 'libro2'.
-	self assert: (carrito quantityOf: 'libro1') equals: 2.
-	self assert: (carrito quantityOf: 'libro2') equals: 3.! !
+			self assert: (carrito quantityOf: 'libroExterno') equals: 0.
+		]! !
 
 
 !classDefinition: #Cart category: #TusLibros!
 Object subclass: #Cart
-	instanceVariableNames: 'books'
+	instanceVariableNames: 'books catalog'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:50:40'!
-addToCart: anISBN withQuantity: anInteger
+!Cart methodsFor: 'initialization' stamp: 'T 11/14/2018 12:50:17'!
+initalizeWithCatalog: aCatalog
 
-	anInteger timesRepeat: [books add: anISBN ]! !
+	books := OrderedCollection new.
+	catalog := aCatalog.! !
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:41:44'!
+!Cart methodsFor: 'initialization' stamp: 'TA 11/12/2018 20:41:44'!
 initialize
 
 	books := OrderedCollection new! !
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:41:56'!
+
+!Cart methodsFor: 'adding' stamp: 'T 11/14/2018 12:55:44'!
+addToCart: anISBN withQuantity: anInteger
+
+	(catalog includes: anISBN) ifFalse: [self error: self class invalidBookErrorMessage].
+	
+	anInteger timesRepeat: [books add: anISBN ]! !
+
+
+!Cart methodsFor: 'testing' stamp: 'TA 11/12/2018 20:41:56'!
 isEmpty
 
 	^books isEmpty.! !
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:42:06'!
-listCart
-
-	^books.! !
-
-!Cart methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:43:01'!
+!Cart methodsFor: 'testing' stamp: 'TA 11/12/2018 20:43:01'!
 quantityOf: aBook
 
 	^books occurrencesOf: aBook.! !
+
+
+!Cart methodsFor: 'accesing' stamp: 'TA 11/12/2018 20:42:06'!
+listCart
+
+	^books.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -115,7 +136,18 @@ quantityOf: aBook
 Cart class
 	instanceVariableNames: ''!
 
-!Cart class methodsFor: 'as yet unclassified' stamp: 'TA 11/12/2018 20:32:13'!
+!Cart class methodsFor: 'instance creation' stamp: 'TA 11/12/2018 20:32:13'!
 new
 
 	^super new initialize.! !
+
+!Cart class methodsFor: 'instance creation' stamp: 'T 11/14/2018 12:48:39'!
+withCatalog: aCatalog
+
+	^ self new initalizeWithCatalog: aCatalog .! !
+
+
+!Cart class methodsFor: 'error messages' stamp: 'T 11/14/2018 12:51:33'!
+invalidBookErrorMessage
+
+	^ 'El libro no está en el catalogo'! !
