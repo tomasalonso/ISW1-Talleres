@@ -248,7 +248,7 @@ debit: anAmount from: aCreditCard
 
 !classDefinition: #RestInterfaceTest category: #TusLibros!
 TestCase subclass: #RestInterfaceTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'testObjectsFactory'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
@@ -257,15 +257,20 @@ TestCase subclass: #RestInterfaceTest
 firstId
 	^ 0.! !
 
-!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:41:52'!
-test01
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:09:34'!
+setUp 
+
+	testObjectsFactory := StoreTestObjectsFactory new.! !
+
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:29:01'!
+test01InterfaceCantCreateACartForAnIncorrectClient
 
 	| tusLibros client password |
 
 	client := 'pepe'.
 	password := 'smalltalk'.
 
-	tusLibros := StoreTestObjectsFactory createRestInterface.
+	tusLibros := testObjectsFactory createRestInterface.
 
 	self
 		should: [
@@ -277,24 +282,90 @@ test01
 			"No usó ids"
 			].! !
 
-!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:45:33'!
-test02
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 19:14:10'!
+test02InterfaceCanListOneCreatedCartOfAClient
 
-	| tusLibros client password |
+	"Crear un carrito ver que esté"
 
-	client := 'tomot'.
-	password := 'procastinar'.
+	| tusLibros client password id |
 
-	tusLibros := StoreTestObjectsFactory createRestInterface.
+	client := testObjectsFactory validClient.
+	password := testObjectsFactory validPassword.
+
+	tusLibros := testObjectsFactory createRestInterface.
+
+	id := tusLibros createCartFor: client withPassword: password.
+	
+	self assert: (tusLibros listCart: id) isEmpty.! !
+
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 19:07:21'!
+test03InterfaceCantListInvalidCart
+
+	| tusLibros |
+
+	tusLibros := testObjectsFactory createRestInterface.
 
 	self
 		should: [
-			tusLibros createCartFor: client withPassword: password.
+			tusLibros listCart: 0.
 			]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = TusLibros incorrectClientErrorMessage.
-			"No usó ids"
+			self assert: anError messageText = TusLibros invalidCartIdError.
+			].! !
+
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 19:14:15'!
+test04InterfaceCanListCreatedCartsOfAClient
+
+	| tusLibros client password id1 id2 |
+
+	client := testObjectsFactory validClient.
+	password := testObjectsFactory validPassword.
+
+	tusLibros := testObjectsFactory createRestInterface.
+
+	id1 := tusLibros createCartFor: client withPassword: password.
+	id2 := tusLibros createCartFor: client withPassword: password.
+	
+	self assert: (tusLibros listCart: id1) isEmpty.
+	self assert: (tusLibros listCart: id2) isEmpty.! !
+
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 19:22:16'!
+test05InterfaceCantAddOnAnInvalidIdCart
+
+	| tusLibros quantity |
+
+	tusLibros := testObjectsFactory createRestInterface.
+	quantity := 1.
+	
+	self
+		should: [
+			tusLibros addCopies: quantity ofThisBook: testObjectsFactory itemSellByTheStore toCart: 0. 			]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = TusLibros invalidCartIdError.
+			].! !
+
+!RestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 19:26:16'!
+test06InterfaceCantAddAnInvalidBookToCart
+
+	| tusLibros client password id quantity |
+
+	client := testObjectsFactory validClient.
+	password := testObjectsFactory validPassword.
+
+	tusLibros := testObjectsFactory createRestInterface.
+
+	id := tusLibros createCartFor: client withPassword: password.
+	quantity := 1.
+	
+	self
+		should: [
+			tusLibros addCopies: quantity ofThisBook: testObjectsFactory itemNotSellByTheStore toCart: id.
+			]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = TusLibros invalidBookISBNError.
 			].! !
 
 
@@ -569,6 +640,23 @@ defaultCatalog
 		at: self itemSellByTheStore put: self itemSellByTheStorePrice;
 		yourself ! !
 
+!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'TA 11/26/2018 19:13:06'!
+defaultClients
+	
+	^ Dictionary new
+		at: self validClient put: self validPassword;
+		yourself! !
+
+!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'TA 11/26/2018 19:12:11'!
+validClient
+
+	^ 'tomot'! !
+
+!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'TA 11/26/2018 19:12:26'!
+validPassword
+
+	^ 'procastinar'! !
+
 
 !StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'HernanWilkinson 6/17/2013 18:37'!
 expiredCreditCard
@@ -593,30 +681,53 @@ today
 	^ today! !
 
 
-!StoreTestObjectsFactory methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:57:36'!
+!StoreTestObjectsFactory methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:13:27'!
 createRestInterface
 
-	^ TusLibros for: true.! !
+	^ TusLibros for: self defaultClients with: self defaultCatalog.! !
 
 
 !classDefinition: #TusLibros category: #TusLibros!
 Object subclass: #TusLibros
-	instanceVariableNames: 'clients'
+	instanceVariableNames: 'clients catalog carts id'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!TusLibros methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:53:37'!
+!TusLibros methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:38:29'!
 createCartFor: aClient withPassword: aPassword 
 
+	| lastid |
+
 	((clients includesKey: aClient) and:
-	[ (clients at: aClient) = aPassword ])
-		ifFalse: [ self error: self class incorrectClientErrorMessage ].! !
+	[(clients at: aClient) = aPassword ])
+		ifFalse: [ self error: self class incorrectClientErrorMessage ].
 
-!TusLibros methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:52:15'!
-initalizeWith: theClients
+	lastid := id.
+	carts add: lastid -> (Cart acceptingItemsOf: catalog) ; yourself.
+	
+	id := id +1.
+	
+	^ lastid.! !
 
-	clients := theClients! !
+!TusLibros methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:36:32'!
+initalizeFor: theClients wtih: aCatalog
+
+	carts := Dictionary new.
+	clients := theClients.
+	catalog := aCatalog.
+	id := 0.! !
+
+
+!TusLibros methodsFor: 'nil' stamp: 'TA 11/26/2018 19:30:12'!
+addCopies: aQuantity ofThisBook: aBook toCart: anId
+
+	(carts includes: anId) ifFalse: [self error: self class invalidCartIdError].! !
+
+!TusLibros methodsFor: 'nil' stamp: 'TA 11/26/2018 18:48:08'!
+listCart: anId
+
+	^ carts at: anId  ifAbsent: [ self error: self class invalidCartIdError. ].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -624,12 +735,22 @@ initalizeWith: theClients
 TusLibros class
 	instanceVariableNames: ''!
 
-!TusLibros class methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:52:34'!
-for: clients
+!TusLibros class methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:12:13'!
+for: clients with: aCatalog
 
-	^ self new initalizeWith: clients.! !
+	^ self new initalizeFor: clients wtih: aCatalog.! !
 
 !TusLibros class methodsFor: 'as yet unclassified' stamp: 'A T G 11/22/2018 21:41:18'!
 incorrectClientErrorMessage
 
 	^ 'Cliente o contraseña incorrecta'.! !
+
+!TusLibros class methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 19:26:12'!
+invalidBookISBNError
+
+	^ 'This books ISBN is not part of the catalog'.! !
+
+!TusLibros class methodsFor: 'as yet unclassified' stamp: 'TA 11/26/2018 18:48:57'!
+invalidCartIdError
+
+	^ 'A cart with this id doesnt exist'.! !
