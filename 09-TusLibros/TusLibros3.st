@@ -604,10 +604,10 @@ test16InterfaceCantListAnExpiredCart
 			self assert: anError messageText = CartSession cantListAnExpiredCartError.
 			].! !
 
-!RestInterfaceTest methodsFor: 'tests' stamp: 'tom 12/3/2018 16:49:22'!
+!RestInterfaceTest methodsFor: 'tests' stamp: 'tom 12/3/2018 16:57:07'!
 test17InterfaceCantAddABookToAnExpiredCart
 
-	| tusLibros cartId client password quantity clock |
+	| tusLibros cartId client password quantity clock cartList|
 
 	clock := ManualClock new.
 	client := testObjectsFactory validClient.
@@ -625,11 +625,15 @@ test17InterfaceCantAddABookToAnExpiredCart
 			tusLibros addCopies: quantity ofThisBook: testObjectsFactory itemSellByTheStore toCart: cartId.
 			]
 		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
+		withExceptionDo: [ :anError | 
 			self assert: anError messageText = CartSession cantAddBooksToAnExpiredCartError.
+			clock backwardsMinutes: 30.
+			cartList := tusLibros listCart: cartId.
+			self assert: (cartList includes: testObjectsFactory itemSellByTheStore).
+	self assert: (cartList occurrencesOf: testObjectsFactory itemSellByTheStore) equals: quantity
 			].! !
 
-!RestInterfaceTest methodsFor: 'tests' stamp: 'tom 12/3/2018 16:49:26'!
+!RestInterfaceTest methodsFor: 'tests' stamp: 'tom 12/3/2018 16:55:28'!
 test18InterfaceCantCheckoutAnExpiredCart
 
 	| tusLibros cartId client password quantity clock |
@@ -1324,6 +1328,11 @@ initialize
 
 	now := 0.! !
 
+
+!ManualClock methodsFor: 'modifiers' stamp: 'tom 12/3/2018 16:57:20'!
+backwardsMinutes: minutes
+
+	now := now - minutes.! !
 
 !ManualClock methodsFor: 'modifiers' stamp: 'tom 12/3/2018 14:52:49'!
 forwardMinutes: minutes
